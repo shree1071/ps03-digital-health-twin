@@ -166,12 +166,13 @@ export function ClinicalTwin3D({
   const [xray, setXray] = useState(false);
   const [layers, setLayers] = useState<Record<Layer, boolean>>(DEFAULT_LAYERS);
   const [selected, setSelected] = useState<string | null>(null);
+  const [viewKey, setViewKey] = useState(0);
 
   const payload = useMemo(() => clinicalToTwinPayload(state, liveOverride), [state, liveOverride]);
 
   return (
     <div className="col" style={{ gap: 10 }}>
-      <div className="toolbar" role="group" aria-label="Body systems">
+      <div className="toolbar" role="group" aria-label="Body systems" style={{ alignItems: "center" }}>
         {LAYERS.map((l) => (
           <label key={l.key} className="toggle">
             <input
@@ -191,6 +192,15 @@ export function ClinicalTwin3D({
           <input type="checkbox" checked={labels} onChange={(e) => setLabels(e.target.checked)} />
           Readings
         </label>
+        <span className="toolbar__sep" aria-hidden />
+        <button
+          type="button"
+          className="btn btn--small"
+          onClick={() => setViewKey((k) => k + 1)}
+          title="Center and fit human body in frame"
+        >
+          Center Body
+        </button>
       </div>
 
       {labels && (
@@ -240,6 +250,7 @@ export function ClinicalTwin3D({
       )}
 
       <TwinScene
+        key={viewKey}
         payload={payload}
         showLabels={labels}
         xray={xray}

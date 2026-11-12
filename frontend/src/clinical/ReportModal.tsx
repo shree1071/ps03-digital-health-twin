@@ -141,9 +141,9 @@ export function ReportModal({
       <div className="report-modal__backdrop" onClick={onClose} />
       <div className="report-modal__dialog">
         <div className="report-modal__toolbar">
-          <div className="row row--tight" style={{ alignItems: "center" }}>
-            <span className="small muted">
-              Report preview · ready to print/save PDF or send
+          <div className="row row--tight" style={{ alignItems: "center", flexWrap: "wrap", gap: 10 }}>
+            <span className="small muted" style={{ fontWeight: 600 }}>
+              Report Preview
             </span>
             {vc && (
               <div className="seg" role="group" aria-label="Report audience">
@@ -164,7 +164,7 @@ export function ReportModal({
               </div>
             )}
           </div>
-          <div className="row row--tight">
+          <div className="row row--tight" style={{ flexWrap: "wrap", gap: 8, alignItems: "center" }}>
             <button className="btn btn--small" onClick={handleCopy}>
               {copied ? "Copied!" : "Copy Markdown"}
             </button>
@@ -177,21 +177,23 @@ export function ReportModal({
             <a className="btn btn--small" href={mailtoHref}>
               Email Summary
             </a>
-            <input
-              type="tel"
-              className="input"
-              style={{ width: 145, padding: "4px 8px", fontSize: 12 }}
-              placeholder="WhatsApp # (or w.env)"
-              value={waPhone}
-              onChange={(e) => setWaPhone(e.target.value)}
-            />
-            <button
-              className="btn btn--small btn--primary"
-              onClick={handleSendWhatsApp}
-              disabled={waSending}
-            >
-              {waSending ? "Sending..." : "Send via WhatsApp"}
-            </button>
+            <div className="row row--tight" style={{ alignItems: "center", gap: 4 }}>
+              <input
+                type="tel"
+                className="input"
+                style={{ width: 140, padding: "5px 8px", fontSize: 12 }}
+                placeholder="WhatsApp # (or w.env)"
+                value={waPhone}
+                onChange={(e) => setWaPhone(e.target.value)}
+              />
+              <button
+                className="btn btn--small btn--primary"
+                onClick={handleSendWhatsApp}
+                disabled={waSending}
+              >
+                {waSending ? "Sending..." : "Send via WhatsApp"}
+              </button>
+            </div>
             <button className="btn btn--small btn--primary" onClick={() => window.print()}>
               Print / Save PDF
             </button>
@@ -231,44 +233,71 @@ export function ReportModal({
 
           {vc && (
             <>
-              <div className={`report-finding report-finding--${statusTone}`} style={{ marginBottom: 14 }}>
-                <div className="spread" style={{ alignItems: "center", gap: 8 }}>
-                  <strong>
-                    {vc.state.suppressed
-                      ? "Sensor Signal Unreliable — Clinical Scoring Withheld"
-                      : flaggedCount > 0
-                        ? `${flaggedCount} Physiological System${flaggedCount > 1 ? "s" : ""} Flagged on 3D Twin`
-                        : "All Monitored Systems Within Expected Range"}
-                  </strong>
+              <div
+                className={`report-finding report-finding--${statusTone}`}
+                style={{
+                  marginBottom: 16,
+                  padding: "12px 16px",
+                  borderRadius: 10,
+                  borderLeftWidth: 5,
+                }}
+              >
+                <div className="spread" style={{ alignItems: "center", gap: 12 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+                    <span
+                      style={{
+                        fontSize: 15,
+                        fontWeight: 700,
+                        color:
+                          statusTone === "anomalous"
+                            ? "#991b1b"
+                            : statusTone === "watch"
+                              ? "#92400e"
+                              : "#166534",
+                      }}
+                    >
+                      {vc.state.suppressed
+                        ? "Sensor Signal Unreliable — Clinical Scoring Withheld"
+                        : vc.state.tier === "URGENT" || vc.state.tier === "REVIEW"
+                          ? `Urgent Clinical Alert: ${flaggedCount > 0 ? `${flaggedCount} System${flaggedCount > 1 ? "s" : ""}` : "Patient"} Requiring Medical Attention`
+                          : flaggedCount > 0
+                            ? `${flaggedCount} Physiological System${flaggedCount > 1 ? "s" : ""} Flagged on 3D Twin`
+                            : "All Monitored Systems Within Expected Range"}
+                    </span>
+                  </div>
                   <span className={`report-badge report-badge--${statusTone}`}>
                     {vc.state.suppressed
-                      ? "SENSOR"
+                      ? "SENSOR ARTIFACT"
                       : `${vc.state.tier}${vc.state.news2 ? ` · NEWS2 ${vc.state.news2.total}` : ""}`}
                   </span>
                 </div>
-                <p className="small" style={{ margin: "6px 0 0" }}>
+                <p style={{ margin: "8px 0 0", fontSize: 13, lineHeight: 1.55 }}>
                   {vc.state.explanation?.narrative ??
                     (activeReport.kind === "patient-summary"
                       ? flaggedCount > 0
-                        ? "One or more vital signs are outside your usual range. Review the highlighted 3D organs below and contact your care team if you feel unwell."
+                        ? "One or more vital signs are outside your normal target range. Review the highlighted 3D organs below and contact your clinical team."
                         : "Your vital signs look steady relative to your personal post-discharge baseline."
                       : "See 3D anatomical twin, baseline drift, and NEWS2 breakdown below.")}
                 </p>
               </div>
 
               <section className="report-sheet__section">
-                <h3>
-                  3D Anatomical Twin &amp; What Is Flagged{" "}
-                  <span className="small muted" style={{ fontWeight: 500 }}>
-                    ({flaggedCount > 0 ? `${flaggedCount} system${flaggedCount > 1 ? "s" : ""} flagged` : "all systems steady"})
+                <div className="spread" style={{ alignItems: "baseline", marginBottom: 6 }}>
+                  <h3 style={{ margin: 0, border: "none" }}>
+                    3D Anatomical Twin &amp; Organ Breakdown
+                  </h3>
+                  <span className="small muted">
+                    {flaggedCount > 0
+                      ? `${flaggedCount} system${flaggedCount > 1 ? "s" : ""} flagged (highlighted in red/yellow)`
+                      : "all systems steady (green)"}
                   </span>
-                </h3>
+                </div>
                 <div className="report-twin-grid">
                   <div className="report-twin-box" ref={twinWrapRef}>
                     <ClinicalTwin3D
                       state={vc.state}
                       liveOverride={vc.liveOverride}
-                      height="340px"
+                      height="400px"
                     />
                   </div>
                   <div className="report-findings">
@@ -280,11 +309,11 @@ export function ReportModal({
                             {f.status.toUpperCase()}
                           </span>
                         </div>
-                        <div className="small" style={{ marginTop: 3 }}>
+                        <div className="small" style={{ marginTop: 4 }}>
                           {f.metricLabel}: <strong>{f.valueText}</strong>{" "}
                           <span className="muted">({f.baselineText})</span>
                         </div>
-                        <p className="small muted" style={{ margin: "4px 0 0" }}>
+                        <p className="small" style={{ margin: "5px 0 0", color: "#475569" }}>
                           {f.summary}
                         </p>
                       </div>

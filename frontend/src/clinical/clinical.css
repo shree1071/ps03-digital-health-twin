@@ -1086,14 +1086,14 @@
 .report-modal__dialog {
   position: relative;
   z-index: 1;
-  width: min(880px, 100%);
-  max-height: 90vh;
+  width: min(940px, 96vw);
+  max-height: 92vh;
   display: flex;
   flex-direction: column;
   background: var(--porcelain);
-  border-radius: 12px;
+  border-radius: 14px;
   border: 1px solid var(--mist);
-  box-shadow: 0 24px 48px rgba(18, 28, 36, 0.28);
+  box-shadow: 0 24px 56px rgba(15, 23, 42, 0.32);
   overflow: hidden;
 }
 .report-modal__toolbar {
@@ -1102,9 +1102,9 @@
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  padding: 12px 18px;
-  background: var(--paper);
-  border-bottom: 1px solid var(--mist);
+  padding: 12px 20px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
 }
 .report-sheet {
   padding: 24px 28px;
@@ -1447,6 +1447,47 @@
 .legacy-twin .brand h2 { font-size: 16px; font-weight: 650; }
 .legacy-twin .main { padding: 16px 0; }
 .legacy-twin .tabs { min-width: 0; }
+
+.twin-canvas {
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  background: radial-gradient(ellipse at 50% 50%, #ffffff 0%, #f1f5f9 65%, #e2e8f0 100%);
+  border: 1px solid var(--border, #cbd5e1);
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.twin-canvas > .callout {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2;
+  transform: translate(8px, -50%);
+  white-space: nowrap;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid #cbd5e1;
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.twin-canvas > .callout.callout-left {
+  transform: translate(calc(-100% - 8px), -50%);
+}
+
+.twin-canvas > .callout.callout-watch {
+  border-color: #f59e0b;
+  color: #b45309;
+  background: #fffbeb;
+}
+
+.twin-canvas > .callout.callout-anomalous {
+  border-color: #ef4444;
+  color: #b91c1c;
+  background: #fef2f2;
+}
 
 @media print {
   #root,

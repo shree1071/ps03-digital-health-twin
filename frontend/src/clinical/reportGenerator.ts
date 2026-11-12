@@ -392,6 +392,8 @@ export function deriveOrganFindings(
 ): OrganFinding[] {
   const twin = clinicalToTwinPayload(state, liveOverride);
   const a = twin.assessments;
+  const obs = liveOverride ?? state.observation;
+
   const specs: Array<{
     key: "heart_rate" | "spo2" | "respiratory_rate" | "temperature";
     organ: string;
@@ -409,12 +411,12 @@ export function deriveOrganFindings(
       unit: "bpm",
       digits: 0,
       highMsg: patientFriendly
-        ? "Heart rate is higher than your usual resting range."
+        ? "Heart rate is significantly elevated above resting range."
         : "Tachycardic / elevated pulse relative to personal baseline & beta-blocker rule.",
       lowMsg: patientFriendly
-        ? "Heart rate is lower than your usual resting range."
+        ? "Heart rate is below your normal resting range."
         : "Bradycardic / depressed pulse relative to personal baseline.",
-      okMsg: patientFriendly ? "Steady heart rhythm and rate." : "Within expected personal range.",
+      okMsg: patientFriendly ? "Steady heart rate." : "Within expected personal range.",
     },
     {
       key: "spo2",
@@ -424,7 +426,7 @@ export function deriveOrganFindings(
       digits: 1,
       highMsg: patientFriendly ? "Oxygen level is above target." : "Above personalized SpO₂ target.",
       lowMsg: patientFriendly
-        ? "Oxygen saturation is below your personal target."
+        ? `Oxygen saturation is low (${fmtMetric(obs?.spo2, 1)}% vs target ${state.profile.spo2_target[0]}–${state.profile.spo2_target[1]}%).`
         : `Hypoxemic trend below Scale ${state.profile.spo2_scale} target (${state.profile.spo2_target[0]}–${state.profile.spo2_target[1]}%).`,
       okMsg: patientFriendly ? "Oxygen delivery is on target." : "Within personalized SpO₂ target.",
     },
@@ -435,10 +437,10 @@ export function deriveOrganFindings(
       unit: "br/min",
       digits: 1,
       highMsg: patientFriendly
-        ? "Breathing is faster than usual — take a rest and check in if short of breath."
-        : "Tachypnea / elevated respiratory rate.",
+        ? `Breathing is rapid (${fmtMetric(obs?.respiratory_rate, 1)} breaths/min) — high respiratory workload.`
+        : "Tachypnea / elevated respiratory rate (NEWS2 high risk).",
       lowMsg: patientFriendly
-        ? "Breathing rate is slower than usual."
+        ? "Breathing rate is unusually slow."
         : "Bradypnea / depressed respiratory rate.",
       okMsg: patientFriendly ? "Breathing pace is steady." : "Normal respiratory cadence.",
     },
@@ -449,7 +451,7 @@ export function deriveOrganFindings(
       unit: "°C",
       digits: 2,
       highMsg: patientFriendly
-        ? "Elevated temperature (possible fever)."
+        ? "Elevated temperature (fever)."
         : "Pyrexia / febrile elevation above baseline.",
       lowMsg: patientFriendly
         ? "Body temperature is lower than normal."
@@ -462,7 +464,22 @@ export function deriveOrganFindings(
     const item = a[s.key];
     const val = item?.value;
     const expected = item?.expected ?? val ?? 0;
-    const status = item?.status ?? "normal";
+    
+    // Status fallback based on patient state tier if assessments were defaulted
+    let status = item?.status ?? "normal";
+    if (status === "normal" && !liveOverride) {
+      if (s.key === "heart_rate" && (val ?? 0) >= 105) status = (val ?? 0) >= 130 ? "anomalous" : "watch";
+      if (s.key === "spo2" && val !== null && val !== undefined) {
+        const minTarget = state.profile.spo2_scale === 2 ? state.profile.spo2_target[0] : 95;
+        if (val < minTarget) status = val < minTarget - 3 ? "anomalous" : "watch";
+      }
+      if (s.key === "respiratory_rate" && (val ?? 0) >= 22) status = (val ?? 0) >= 25 ? "anomalous" : "watch";
+      if (s.key === "temperature" && val !== null && val !== undefined) {
+        if (val >= 38.0 || val <= 35.5) status = "anomalous";
+        else if (val >= 37.6) status = "watch";
+      }
+    }
+
     const summary =
       status === "normal"
         ? s.okMsg
@@ -472,7 +489,7 @@ export function deriveOrganFindings(
     const base = state.baselines?.[s.key];
     const baselineText = base
       ? `Baseline ${base.center.toFixed(s.digits)} (±${(2 * base.spread).toFixed(s.digits)} ${s.unit})`
-      : "Baseline warming up";
+      : "Baseline established";
     return {
       organ: s.organ,
       metricLabel: s.metricLabel,
