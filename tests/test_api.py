@@ -126,3 +126,16 @@ def test_replay_backup_demo(settings):
         state = c.get(f"/api/twin/{TWIN}/state").json()
         assert state["observation"]["source"] == "replay"
         c.post("/api/simulator/stop")
+
+
+def test_fhir_search_timeout_is_reported_as_service_unavailable(client, monkeypatch):
+    from unittest.mock import AsyncMock
+
+    import httpx
+
+    service = client.app.state.container.clinical
+    monkeypatch.setattr(service.hapi, "search_observations", AsyncMock(side_effect=httpx.ReadTimeout("")))
+    response = client.get("/api/clinical/hapi/observations/synthetic-patient")
+
+    assert response.status_code == 503
+    assert "HAPI FHIR is unavailable or timed out" in response.json()["detail"]

@@ -8,10 +8,13 @@ from fastapi import HTTPException, Request
 
 from backend.app.config import Settings
 from backend.app.db import Database
+from backend.app.services.clinical import ClinicalService
 from backend.app.services.devices import DeviceService
 from backend.app.services.hub import Hub
 from backend.app.services.live import LiveRunner
 from backend.app.services.queries import QueryService
+from backend.app.services.replay import ReplayRunner
+from backend.app.services.report import ReportService
 from backend.app.services.twin_service import NoBaselineError, TwinNotFoundError, TwinService
 
 
@@ -24,6 +27,9 @@ class Container:
     live: LiveRunner
     hub: Hub
     devices: DeviceService
+    clinical: ClinicalService | None = None
+    replay: ReplayRunner | None = None
+    report: ReportService | None = None
 
 
 def get_container(request: Request) -> Container:

@@ -38,3 +38,12 @@ mobile/android/local.properties
 *.apk
 !downloads/health-twin.apk
 frontend/tsconfig.tsbuildinfo
+
+# Vendored binaries (HAPI FHIR server WAR, downloaded by scripts/setup_hapi.py)
+vendor/
+
+# Runtime / HAPI FHIR data
+var/
+
+# Synthea generated output
+data/synthea/output/

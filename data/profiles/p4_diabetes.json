@@ -1,0 +1,102 @@
+{
+  "patient_id": "e9b69e13-f4f5-0fbb-9d65-c6385e7c9da6",
+  "display_name": "Anibal Sidney Tromp",
+  "age_years": 80,
+  "sex": "male",
+  "discharged_on": "2026-11-05",
+  "conditions": [
+    {
+      "code": "44054006",
+      "display": "Diabetes mellitus type 2 (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "127013003",
+      "display": "Disorder of kidney due to diabetes mellitus (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "90781000119102",
+      "display": "Microalbuminuria due to type 2 diabetes mellitus (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "1551000119108",
+      "display": "Nonproliferative diabetic retinopathy due to type II diabetes mellitus",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "157141000119108",
+      "display": "Proteinuria due to type 2 diabetes mellitus (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "401314000",
+      "display": "Acute non-ST segment elevation myocardial infarction (disorder)",
+      "system": "http://snomed.info/sct"
+    }
+  ],
+  "medications": [
+    {
+      "code": "866412",
+      "display": "24 HR metoprolol succinate 100 MG Extended Release Oral Tablet",
+      "generic": "metoprolol",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "243670",
+      "display": "aspirin 81 MG Oral Tablet",
+      "generic": "aspirin",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "309362",
+      "display": "Clopidogrel 75 MG Oral Tablet",
+      "generic": "clopidogrel",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "858817",
+      "display": "enalapril maleate 10 MG Oral Tablet",
+      "generic": "enalapril",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "106892",
+      "display": "insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin]",
+      "generic": "insulin",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "860975",
+      "display": "24 HR Metformin hydrochloride 500 MG Extended Release Oral Tablet",
+      "generic": "metformin",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    }
+  ],
+  "hypercapnic_respiratory_failure": false,
+  "spo2_scale": 1,
+  "spo2_target": [
+    94.0,
+    98.0
+  ],
+  "beta_blocked": true,
+  "pulse_correction_bpm": 10.0,
+  "notes": "Synthea bundle Anibal473_Tromp100_e9b69e13-f4f5-0fbb-9d65-c6385e7c9da6.json (population seed 42). Pulse correction +10 bpm: 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet blunts the heart-rate response, so a normal pulse is not reassurance.",
+  "source": "synthea",
+  "scenario": "sensor_artifact",
+  "rules": [
+    {
+      "rule_id": "beta_blocker_pulse",
+      "title": "Beta-blocker pulse correction",
+      "profile_fact": "Medication: 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (RxNorm 866412)",
+      "effect": "Pulse scored with a +10 bpm correction because beta-blockade blunts the heart-rate response; a normal pulse is not treated as reassurance."
+    },
+    {
+      "rule_id": "rolling_baseline",
+      "title": "Per-patient rolling baseline",
+      "profile_fact": "Baseline learned from this patient's own readings (e9b69e13-f4f5-0fbb-9d65-c6385e7c9da6).",
+      "effect": "Vitals are compared with the patient's own recent typical values, so gradual drift away from their normal is detected even when every reading is still inside population reference ranges."
+    }
+  ]
+}

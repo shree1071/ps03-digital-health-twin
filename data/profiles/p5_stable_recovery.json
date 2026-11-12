@@ -1,0 +1,72 @@
+{
+  "patient_id": "e7445bd6-8c6d-8964-b881-03450261c0d8",
+  "display_name": "Catrice Loma Nader",
+  "age_years": 73,
+  "sex": "female",
+  "discharged_on": "2026-11-05",
+  "conditions": [
+    {
+      "code": "271737000",
+      "display": "Anemia (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "162864005",
+      "display": "Body mass index 30+ - obesity (finding)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "59621000",
+      "display": "Essential hypertension (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "237602007",
+      "display": "Metabolic syndrome X (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "78275009",
+      "display": "Obstructive sleep apnea syndrome (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "64859006",
+      "display": "Osteoporosis (disorder)",
+      "system": "http://snomed.info/sct"
+    }
+  ],
+  "medications": [
+    {
+      "code": "904419",
+      "display": "Alendronic acid 10 MG Oral Tablet",
+      "generic": "alendronic acid",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "310798",
+      "display": "Hydrochlorothiazide 25 MG Oral Tablet",
+      "generic": "hydrochlorothiazide",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    }
+  ],
+  "hypercapnic_respiratory_failure": false,
+  "spo2_scale": 1,
+  "spo2_target": [
+    94.0,
+    98.0
+  ],
+  "beta_blocked": false,
+  "pulse_correction_bpm": 0.0,
+  "notes": "Synthea bundle Catrice481_Loma263_Nader710_e7445bd6-8c6d-8964-b881-03450261c0d8.json (population seed 42). No chronic cardiorespiratory disease; used for the BIDMC real-data replay.",
+  "source": "synthea",
+  "scenario": "bidmc_replay",
+  "rules": [
+    {
+      "rule_id": "rolling_baseline",
+      "title": "Per-patient rolling baseline",
+      "profile_fact": "Baseline learned from this patient's own readings (e7445bd6-8c6d-8964-b881-03450261c0d8).",
+      "effect": "Vitals are compared with the patient's own recent typical values, so gradual drift away from their normal is detected even when every reading is still inside population reference ranges."
+    }
+  ]
+}

@@ -61,6 +61,8 @@ def settings(tmp_path) -> Settings:
         tick_seconds=0.05,
         frontend_dist=str(tmp_path / "no-frontend"),
         replay_file=str(tmp_path / "missing.jsonl"),
+        clinical_profile_dir=str(tmp_path / "profiles"),
+        bidmc_data_dir=str(tmp_path / "bidmc"),
     )
 
 

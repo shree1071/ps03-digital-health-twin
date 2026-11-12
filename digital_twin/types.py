@@ -71,6 +71,10 @@ class Observation:
     activity_intensity: float = 0.0
     is_asleep: bool = False
     source: str = "simulator"
+    # NEWS2 also scores systolic BP. BIDMC provides neither BP nor temperature,
+    # so both come from the simulator (PS-03 §3.2A).
+    systolic_bp: float | None = None
+    diastolic_bp: float | None = None
 
 
 @dataclass

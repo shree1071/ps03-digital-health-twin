@@ -1,0 +1,81 @@
+{
+  "patient_id": "c8e60506-bdf8-1cb7-8ffa-b79df5451c67",
+  "display_name": "Jarod Kraig Runte",
+  "age_years": 62,
+  "sex": "male",
+  "discharged_on": "2026-11-05",
+  "conditions": [
+    {
+      "code": "87433001",
+      "display": "Pulmonary emphysema (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "59621000",
+      "display": "Essential hypertension (disorder)",
+      "system": "http://snomed.info/sct"
+    },
+    {
+      "code": "201834006",
+      "display": "Localized, primary osteoarthritis of the hand (disorder)",
+      "system": "http://snomed.info/sct"
+    }
+  ],
+  "medications": [
+    {
+      "code": "245314",
+      "display": "albuterol 5 MG/ML Inhalation Solution",
+      "generic": "albuterol",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "308136",
+      "display": "amLODIPine 2.5 MG Oral Tablet",
+      "generic": "amlodipine",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "896209",
+      "display": "60 ACTUAT Fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler",
+      "generic": "fluticasone/salmeterol",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "314076",
+      "display": "lisinopril 10 MG Oral Tablet",
+      "generic": "lisinopril",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    },
+    {
+      "code": "849574",
+      "display": "Naproxen sodium 220 MG Oral Tablet",
+      "generic": "naproxen",
+      "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+    }
+  ],
+  "hypercapnic_respiratory_failure": true,
+  "spo2_scale": 2,
+  "spo2_target": [
+    88.0,
+    92.0
+  ],
+  "beta_blocked": false,
+  "pulse_correction_bpm": 0.0,
+  "notes": "Synthea bundle Jarod376_Runte676_c8e60506-bdf8-1cb7-8ffa-b79df5451c67.json (population seed 42). SpO₂ Scale 2 (target 88–92%): home oxygen concentrator on record alongside Pulmonary emphysema (disorder).",
+  "source": "synthea",
+  "scenario": "slow_deterioration",
+  "rules": [
+    {
+      "rule_id": "spo2_scale_2",
+      "title": "SpO₂ Scale 2 (target 88–92%)",
+      "profile_fact": "Condition: Pulmonary emphysema (disorder) (SNOMED 87433001)",
+      "effect": "SpO₂ scored on NEWS2 Scale 2 instead of Scale 1; 88–92% is the target range and scores 0."
+    },
+    {
+      "rule_id": "rolling_baseline",
+      "title": "Per-patient rolling baseline",
+      "profile_fact": "Baseline learned from this patient's own readings (c8e60506-bdf8-1cb7-8ffa-b79df5451c67).",
+      "effect": "Vitals are compared with the patient's own recent typical values, so gradual drift away from their normal is detected even when every reading is still inside population reference ranges."
+    }
+  ]
+}

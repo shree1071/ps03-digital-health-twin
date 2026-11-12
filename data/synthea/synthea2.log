@@ -1,0 +1,528 @@
+Warning: Synthea is configured to export FHIR transaction bundles for generated patients but not to export the practitioners and organizations that the patient bundle entries will reference. See https://github.com/synthetichealth/synthea/wiki/FHIR-Transaction-Bundles for more information.
+SLF4J: No SLF4J providers were found.
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#noProviders for further details.
+Scanned 90 modules and 157 submodules.
+Loading submodule modules/allergies/allergy_panel.json
+Loading submodule modules/allergies/drug_allergy_incidence.json
+Loading submodule modules/allergies/environmental_allergy_incidence.json
+Loading submodule modules/allergies/food_allergy_incidence.json
+Loading submodule modules/allergies/immunotherapy.json
+Loading submodule modules/allergies/outgrow_env_allergies.json
+Loading submodule modules/allergies/outgrow_food_allergies.json
+Loading submodule modules/allergies/severe_allergic_reaction.json
+Loading submodule modules/anemia/anemia_sub.json
+Loading submodule modules/breast_cancer/chemotherapy_breast.json
+Loading submodule modules/breast_cancer/hormone_diagnosis.json
+Loading submodule modules/breast_cancer/hormonetherapy_breast.json
+Loading submodule modules/breast_cancer/surgery_therapy_breast.json
+Loading submodule modules/breast_cancer/tnm_diagnosis.json
+Loading submodule modules/contraceptives/clear_contraceptive.json
+Loading submodule modules/contraceptives/female_sterilization.json
+Loading submodule modules/contraceptives/implant_contraceptive.json
+Loading submodule modules/contraceptives/injectable_contraceptive.json
+Loading submodule modules/contraceptives/intrauterine_device.json
+Loading submodule modules/contraceptives/male_sterilization.json
+Loading submodule modules/contraceptives/oral_contraceptive.json
+Loading submodule modules/contraceptives/patch_contraceptive.json
+Loading submodule modules/contraceptives/ring_contraceptive.json
+Loading submodule modules/covid19/admission.json
+Loading submodule modules/covid19/determine_risk.json
+Loading Lookup Table: covid-19-severity-outcomes.csv
+Loading Lookup Table: covid-19-survival-outcomes.csv
+Loading submodule modules/covid19/diagnose_bacterial_infection.json
+Loading submodule modules/covid19/diagnose_blood_clot.json
+Loading submodule modules/covid19/end_outcomes.json
+Loading submodule modules/covid19/end_symptoms.json
+Loading submodule modules/covid19/infection.json
+Loading submodule modules/covid19/measurements_daily.json
+Loading submodule modules/covid19/measurements_frequent.json
+Loading submodule modules/covid19/measurements_vitals.json
+Loading submodule modules/covid19/medications.json
+Loading submodule modules/covid19/nonsurvivor_lab_values.json
+Loading submodule modules/covid19/outcomes.json
+Loading submodule modules/covid19/supplies_hospitalization.json
+Loading submodule modules/covid19/supplies_icu.json
+Loading submodule modules/covid19/supplies_intubation.json
+Loading submodule modules/covid19/survivor_lab_values.json
+Loading submodule modules/covid19/symptoms.json
+Loading submodule modules/covid19/treat_blood_clot.json
+Loading submodule modules/dermatitis/early_moderate_eczema_obs.json
+Loading submodule modules/dermatitis/early_severe_eczema_obs.json
+Loading submodule modules/dermatitis/mid_moderate_eczema_obs.json
+Loading submodule modules/dermatitis/mid_severe_eczema_obs.json
+Loading submodule modules/dermatitis/moderate_cd_obs.json
+Loading submodule modules/dermatitis/severe_cd_obs.json
+Loading submodule modules/dme/wheelchair.json
+Loading submodule modules/dme/wheelchair_end.json
+Loading submodule modules/encounter/anxiety_screening.json
+Loading submodule modules/encounter/depression_screening.json
+Loading submodule modules/encounter/fall_risk_screening.json
+Loading submodule modules/encounter/hark_screening.json
+Loading submodule modules/encounter/hospital_basic_labs.json
+Loading submodule modules/encounter/sdoh_hrsn.json
+Loading submodule modules/encounter/substance_use_screening.json
+Loading submodule modules/encounter/vitals.json
+Loading submodule modules/eye/intraocular_pressure.json
+Loading submodule modules/eye/ophthalmic_progression.json
+Loading submodule modules/eye/ophthalmic_tomography.json
+Loading submodule modules/eye/visual_acuity.json
+Loading submodule modules/heart/acs_anticoagulant.json
+Loading submodule modules/heart/acs_antiplatelet.json
+Loading submodule modules/heart/acs_arrival_medications.json
+Loading submodule modules/heart/acs_discharge_meds.json
+Loading submodule modules/heart/avrr/antithrombotic.json
+Loading submodule modules/heart/avrr/avrr_referral.json
+Loading submodule modules/heart/avrr/intraop_meds_blood.json
+Loading submodule modules/heart/avrr/outcomes.json
+Loading submodule modules/heart/avrr/preoperative.json
+Loading submodule modules/heart/avrr/savrr_operation.json
+Loading submodule modules/heart/avrr/savrr_postop.json
+Loading submodule modules/heart/avrr/sequence.json
+Loading submodule modules/heart/cabg/cabg_referral.json
+Loading submodule modules/heart/cabg/details.json
+Loading Lookup Table: cabg_details_operative_approach.csv
+Loading Lookup Table: cabg_details_num_grafts.csv
+Loading Lookup Table: cabg_details_num_art_cond.csv
+Loading submodule modules/heart/cabg/icu_meds_devices.json
+Loading submodule modules/heart/cabg/labs_common.json
+Loading submodule modules/heart/cabg/operation.json
+Loading submodule modules/heart/cabg/or_intraop.json
+Loading submodule modules/heart/cabg/or_labs_meds.json
+Loading submodule modules/heart/cabg/outcomes.json
+Loading submodule modules/heart/cabg/postop.json
+Loading submodule modules/heart/cabg/postop_blood.json
+Loading submodule modules/heart/cabg/preoperative.json
+Loading submodule modules/heart/cabg_sequence.json
+Loading submodule modules/heart/cardiac_labs.json
+Loading submodule modules/heart/chf_lab_work.json
+Loading submodule modules/heart/chf_lvad.json
+Loading submodule modules/heart/chf_meds.json
+Loading submodule modules/heart/chf_meds_hfmef.json
+Loading submodule modules/heart/chf_meds_hfref_nyha2.json
+Loading submodule modules/heart/chf_meds_hfref_nyha3.json
+Loading submodule modules/heart/chf_meds_hfref_nyha4.json
+Loading submodule modules/heart/chf_nyha_panel.json
+Loading submodule modules/heart/chf_transplant.json
+Loading submodule modules/heart/nsteacs_pathway.json
+Loading submodule modules/heart/operative_status.json
+Loading submodule modules/heart/or_blood.json
+Loading Lookup Table: or_blood_anemia_check.csv
+Loading Lookup Table: or_blood_platelet_check.csv
+Loading Lookup Table: or_blood_plasma_check.csv
+Loading submodule modules/heart/savrepair/operative_status.json
+Loading submodule modules/heart/savreplace/operative_status.json
+Loading submodule modules/heart/stemi_fibrinolytic.json
+Loading submodule modules/heart/stemi_pathway.json
+Loading submodule modules/heart/tavr/alt_access.json
+Loading submodule modules/heart/tavr/operation.json
+Loading submodule modules/heart/tavr/operative_status.json
+Loading submodule modules/heart/tavr/outcomes.json
+Loading submodule modules/heart/tavr/postop.json
+Loading submodule modules/heart/vhd_risks.json
+Loading submodule modules/hiv/art_sequence.json
+Loading submodule modules/hiv/art_sequence_1987_1994.json
+Loading submodule modules/hiv/art_sequence_1995_1996.json
+Loading submodule modules/hiv/art_sequence_1997_2002.json
+Loading submodule modules/hiv/art_sequence_2003_2005.json
+Loading submodule modules/hiv/art_sequence_2006_2014.json
+Loading submodule modules/hiv/art_sequence_2015.json
+Loading submodule modules/hiv/hiv_baseline.json
+Loading submodule modules/hiv/hiv_cd4.json
+Loading Lookup Table: hiv_stage.csv
+Loading submodule modules/hiv/hiv_oi_prophylaxis.json
+Loading submodule modules/hiv/hiv_screening.json
+Loading submodule modules/hiv/hiv_viral_load.json
+Loading submodule modules/hiv/stop_all_art_meds.json
+Loading submodule modules/injuries/broken_jaw.json
+Loading submodule modules/lung_cancer/lung_cancer_probabilities.json
+Loading submodule modules/medications/ace_arb.json
+Loading Lookup Table: ace_arb_ingredient_distribution.csv
+Loading Lookup Table: ace_arb_amlodipine_benazepril_product_distribution.csv
+Loading Lookup Table: ace_arb_benazepril_product_distribution.csv
+Loading Lookup Table: ace_arb_benazepril_hydrochlorothiazide_product_distribution.csv
+Loading Lookup Table: ace_arb_enalapril_product_distribution.csv
+Loading Lookup Table: ace_arb_hydrochlorothiazide_lisinopril_product_distribution.csv
+Loading Lookup Table: ace_arb_hydrochlorothiazide_losartan_product_distribution.csv
+Loading Lookup Table: ace_arb_hydrochlorothiazide_valsartan_product_distribution.csv
+Loading Lookup Table: ace_arb_irbesartan_product_distribution.csv
+Loading Lookup Table: ace_arb_lisinopril_product_distribution.csv
+Loading Lookup Table: ace_arb_losartan_product_distribution.csv
+Loading Lookup Table: ace_arb_quinapril_product_distribution.csv
+Loading Lookup Table: ace_arb_ramipril_product_distribution.csv
+Loading Lookup Table: ace_arb_sacubitril_valsartan_product_distribution.csv
+Loading Lookup Table: ace_arb_telmisartan_product_distribution.csv
+Loading Lookup Table: ace_arb_valsartan_product_distribution.csv
+Loading submodule modules/medications/beta_blocker.json
+Loading Lookup Table: beta_blocker_ingredient_distribution.csv
+Loading Lookup Table: beta_blocker_atenolol_product_distribution.csv
+Loading Lookup Table: beta_blocker_bisoprolol_product_distribution.csv
+Loading Lookup Table: beta_blocker_bisoprolol_hydrochlorothiazide_product_distribution.csv
+Loading Lookup Table: beta_blocker_carvedilol_product_distribution.csv
+Loading Lookup Table: beta_blocker_labetalol_product_distribution.csv
+Loading Lookup Table: beta_blocker_metoprolol_product_distribution.csv
+Loading Lookup Table: beta_blocker_nebivolol_product_distribution.csv
+Loading Lookup Table: beta_blocker_propranolol_product_distribution.csv
+Loading submodule modules/medications/ear_infection_antibiotic.json
+Loading submodule modules/medications/emergency_inhaler.json
+Loading Lookup Table: emergency_inhaler_ingredient_distribution.csv
+Loading Lookup Table: emergency_inhaler_albuterol_product_distribution.csv
+Loading Lookup Table: emergency_inhaler_levalbuterol_product_distribution.csv
+Loading submodule modules/medications/hypertension_medication.json
+Loading submodule modules/medications/maintenance_inhaler.json
+Loading Lookup Table: maintenance_inhaler_ingredient_distribution.csv
+Loading Lookup Table: maintenance_inhaler_beclomethasone_product_distribution.csv
+Loading Lookup Table: maintenance_inhaler_budesonide_product_distribution.csv
+Loading Lookup Table: maintenance_inhaler_fluticasone_product_distribution.csv
+Loading Lookup Table: maintenance_inhaler_mometasone_product_distribution.csv
+Loading submodule modules/medications/moderate_opioid_pain_reliever.json
+Loading submodule modules/medications/otc_antihistamine.json
+Loading submodule modules/medications/otc_pain_reliever.json
+Loading submodule modules/medications/statin.json
+Loading Lookup Table: statin_ingredient_distribution.csv
+Loading Lookup Table: statin_atorvastatin_product_distribution.csv
+Loading Lookup Table: statin_ezetimibe_simvastatin_product_distribution.csv
+Loading Lookup Table: statin_lovastatin_product_distribution.csv
+Loading Lookup Table: statin_pitavastatin_product_distribution.csv
+Loading Lookup Table: statin_pravastatin_product_distribution.csv
+Loading Lookup Table: statin_rosuvastatin_product_distribution.csv
+Loading Lookup Table: statin_simvastatin_product_distribution.csv
+Loading submodule modules/medications/strong_opioid_pain_reliever.json
+Loading submodule modules/metabolic_syndrome/amputations.json
+Loading submodule modules/metabolic_syndrome/diabetic_retinopathy_diagnoses.json
+Loading submodule modules/metabolic_syndrome/diabetic_retinopathy_progression.json
+Loading submodule modules/metabolic_syndrome/dme_supplies.json
+Loading submodule modules/metabolic_syndrome/kidney_conditions.json
+Loading submodule modules/metabolic_syndrome/medications.json
+Loading submodule modules/snf/skilled_nursing_facility.json
+Loading submodule modules/surgery/general_anesthesia.json
+Loading submodule modules/total_joint_replacement/functional_status_assessments.json
+Loading submodule modules/uti/abx_tx.json
+Loading submodule modules/uti/ambulatory_eval.json
+Loading submodule modules/uti/ambulatory_path.json
+Loading submodule modules/uti/ed_bundle.json
+Loading submodule modules/uti/ed_eval.json
+Loading submodule modules/uti/ed_path.json
+Loading submodule modules/uti/gu_pregnancy_check.json
+Loading submodule modules/uti/hpi.json
+Loading submodule modules/uti/lab_follow_up.json
+Loading submodule modules/uti/labs.json
+Loading submodule modules/uti/telemed_path.json
+Loading submodule modules/veterans/veteran_suicide_probabilities.json
+Loading submodule modules/weight_loss/mend_week.json
+Loading module modules/AIS_From_School_Screening_to_SOSORT_Recommendations.json
+Loading module modules/acute_myeloid_leukemia.json
+Loading Lookup Table: AML.csv
+Loading module modules/allergic_rhinitis.json
+Loading module modules/allergies.json
+Loading module modules/anemia___unknown_etiology.json
+Loading module modules/appendicitis.json
+Loading module modules/asthma.json
+Loading module modules/atopy.json
+Loading module modules/atrial_fibrillation.json
+Loading module modules/attention_deficit_disorder.json
+Loading module modules/bone_marrow_transplant.json
+Loading module modules/breast_cancer.json
+Loading module modules/bronchitis.json
+Loading module modules/cerebral_palsy.json
+Loading module modules/chronic_kidney_disease.json
+Loading module modules/colorectal_cancer.json
+Loading module modules/congestive_heart_failure.json
+Loading module modules/contraceptive_maintenance.json
+Loading module modules/contraceptives.json
+Loading module modules/copd.json
+Loading module modules/covid19.json
+Loading Lookup Table: covid19_prob.csv
+Loading module modules/cystic_fibrosis.json
+Loading module modules/dementia.json
+Loading module modules/dental_and_oral_examination.json
+Loading module modules/dentures.json
+Loading module modules/dermatitis.json
+Loading module modules/diabetic_retinopathy_treatment.json
+Loading Lookup Table: diabetic_retinopathy_followup.csv
+Loading module modules/dialysis.json
+Loading module modules/ear_infections.json
+Loading module modules/epilepsy.json
+Loading module modules/female_reproduction.json
+Loading module modules/fibromyalgia.json
+Loading module modules/food_allergies.json
+Loading module modules/gallstones.json
+Loading module modules/gout.json
+Loading module modules/hiv_care.json
+Loading Lookup Table: hiv_care.csv
+Loading module modules/hiv_diagnosis.json
+Loading Lookup Table: hiv_mortality_later.csv
+Loading Lookup Table: hiv_mortality_early.csv
+Loading Lookup Table: hiv_mortality_very_early.csv
+Loading Lookup Table: hiv_diagnosis_early.csv
+Loading Lookup Table: hiv_diagnosis_later.csv
+Loading module modules/home_health_treatment.json
+Loading module modules/home_hospice_snf.json
+Loading module modules/homelessness.json
+Loading module modules/hospice_treatment.json
+Loading module modules/hypertension.json
+Loading module modules/hypothyroidism.json
+Loading module modules/injuries.json
+Loading module modules/kidney_transplant.json
+Loading module modules/lung_cancer.json
+Loading module modules/lupus.json
+Loading module modules/mTBI.json
+Loading module modules/med_rec.json
+Loading module modules/mend_program.json
+Loading module modules/metabolic_syndrome_care.json
+Loading module modules/metabolic_syndrome_disease.json
+Loading module modules/myocardial_infarction.json
+Loading module modules/opioid_addiction.json
+Loading module modules/osteoarthritis.json
+Loading module modules/osteoporosis.json
+Loading module modules/pregnancy.json
+Loading module modules/prescribing_opioids_for_chronic_pain_and_treatment_of_oud.json
+Loading module modules/rheumatoid_arthritis.json
+Loading module modules/self_harm.json
+Loading module modules/sepsis.json
+Loading module modules/sexual_activity.json
+Loading module modules/sinusitis.json
+Loading module modules/sleep_apnea.json
+Loading module modules/sore_throat.json
+Loading module modules/spina_bifida.json
+Loading module modules/stable_ischemic_heart_disease.json
+Loading module modules/stroke.json
+Loading module modules/total_joint_replacement.json
+Loading module modules/trigger_bone_marrow_transplant.json
+Loading module modules/urinary_tract_infections.json
+Loading Lookup Table: uti.csv
+Loading Lookup Table: uti_recurrence.csv
+Loading module modules/veteran.json
+Loading module modules/veteran_hyperlipidemia.json
+Loading module modules/veteran_lung_cancer.json
+Loading module modules/veteran_mdd.json
+Loading module modules/veteran_prostate_cancer.json
+Loading module modules/veteran_ptsd.json
+Loading module modules/veteran_self_harm.json
+Loading module modules/veteran_substance_abuse_conditions.json
+Loading module modules/veteran_substance_abuse_treatment.json
+Loading module modules/vhd_aortic.json
+Loading Lookup Table: vhd_as.csv
+Loading Lookup Table: vhd_ar.csv
+Loading module modules/vhd_mitral.json
+Loading Lookup Table: vhd_mr.csv
+Loading Lookup Table: vhd_ms.csv
+Loading module modules/vhd_pulmonic.json
+Loading Lookup Table: vhd_ps.csv
+Loading Lookup Table: vhd_pr.csv
+Loading module modules/vhd_tricuspid.json
+Loading Lookup Table: vhd_tr.csv
+Loading Lookup Table: vhd_ts.csv
+Loading module modules/wellness_encounters.json
+Running with options:
+Population: 150
+Seed: 7
+Provider Seed:1794471595086
+Reference Time: 1793491200000
+Location: Massachusetts
+Min Age: 45
+Max Age: 85
+7 -- Clinton763 Mayer370 (30 y/o M) Lincoln, Massachusetts DECEASED (40775)
+6 -- Stan246 Bednar518 (53 y/o M) Weymouth, Massachusetts  (71739)
+3 -- Gwyn381 Ima629 Runte676 (56 y/o F) North Attleborough, Massachusetts  (78824)
+2 -- Samara159 Runolfsdottir785 (67 y/o F) Chelsea, Massachusetts  (91693)
+4 -- Simone657 Thiel172 (40 y/o F) Newton, Massachusetts DECEASED (56810)
+WARNING: sun.reflect.Reflection.getCallerClass is not supported. This will impact performance.
+1 -- Darron84 Hegmann834 (56 y/o M) Salem, Massachusetts  (81809)
+8 -- Jaime666 Welch179 (70 y/o M) Wareham, Massachusetts  (96303)
+5 -- Cory323 Wisoky380 (78 y/o M) Burlington, Massachusetts DECEASED (149018)
+10 -- Noe500 Brekke496 (43 y/o M) Belchertown, Massachusetts DECEASED (59537)
+9 -- Lavonna163 Carmelina668 Quigley282 (69 y/o F) Haverhill, Massachusetts DECEASED (96585)
+7 -- Lyndon118 Hermiston71 (63 y/o M) Lincoln, Massachusetts  (86161)
+11 -- Candice681 Avery919 Hammes673 (71 y/o F) Amherst, Massachusetts  (103649)
+9 -- Twana617 Charmaine338 Tromp100 (70 y/o F) Haverhill, Massachusetts  (104416)
+12 -- Jarod376 Runte676 (62 y/o M) Everett, Massachusetts  (86471)
+14 -- Eladia866 Pandora807 Hammes673 (51 y/o F) Methuen, Massachusetts  (72118)
+10 -- Elvin140 Krajcik437 (81 y/o M) Belchertown, Massachusetts  (132134)
+13 -- Roselyn270 Jeanelle736 Steuber698 (73 y/o F) Shrewsbury, Massachusetts DECEASED (108061)
+4 -- Aimee901 Jerrie417 Hills818 (69 y/o F) Newton, Massachusetts  (100628)
+17 -- Dann525 Stacie105 Jakubowski832 (63 y/o F) Natick, Massachusetts  (90229)
+18 -- Debby656 Francisco472 Goodwin327 (47 y/o F) Lynn, Massachusetts  (65443)
+15 -- Marquis364 Kessler503 (77 y/o M) Lowell, Massachusetts DECEASED (140164)
+16 -- Jimmie93 Luettgen772 (61 y/o M) Lexington, Massachusetts  (88254)
+20 -- Maya972 Jenniffer979 Gislason620 (48 y/o F) Sudbury, Massachusetts  (67532)
+19 -- Victor265 Carlos172 MacGyver246 (45 y/o F) Belchertown, Massachusetts  (63568)
+21 -- Natalie960 Trantow673 (71 y/o F) Andover, Massachusetts DECEASED (98630)
+23 -- Candelaria844 Suzie388 Hayes766 (53 y/o F) Fitchburg, Massachusetts  (74758)
+22 -- Ja391 Carmela47 Mann644 (50 y/o F) Sandwich, Massachusetts  (70520)
+21 -- Darcie474 Avery919 Kihn564 (58 y/o F) Andover, Massachusetts DECEASED (84548)
+24 -- Ricki338 Ratke343 (62 y/o F) South Ashburnham, Massachusetts  (96688)
+13 -- Mariah942 Sophia44 Crist667 (74 y/o F) Shrewsbury, Massachusetts DECEASED (119329)
+25 -- Thomas756 Goyette777 (74 y/o M) Lincoln, Massachusetts  (102423)
+27 -- Kazuko67 Modesta635 Sporer811 (74 y/o F) Charlton, Massachusetts  (102165)
+28 -- Delilah659 Jammie261 Nicolas769 (78 y/o F) Ashland, Massachusetts  (108732)
+21 -- Reta616 Mckenzie208 Dicki44 (66 y/o F) Andover, Massachusetts DECEASED (132731)
+26 -- Drusilla108 Chantay958 Swift555 (67 y/o F) Attleboro, Massachusetts DECEASED (114749)
+29 -- Shaunna800 Heaney114 (49 y/o F) Worcester, Massachusetts  (65871)
+5 -- Todd315 Grant908 (80 y/o M) Burlington, Massachusetts  (112536)
+30 -- Scarlet110 Luba688 Beer512 (77 y/o F) Lexington, Massachusetts  (109468)
+31 -- Anibal473 Tromp100 (80 y/o M) Granby, Massachusetts  (138939)
+15 -- Dong972 Leuschke194 (79 y/o M) Lowell, Massachusetts  (110981)
+33 -- Yon80 Ledner144 (56 y/o F) Walpole, Massachusetts  (79360)
+32 -- Michell380 Maranda920 Flatley871 (78 y/o F) Westford, Massachusetts  (112434)
+35 -- Olin642 Romaguera67 (54 y/o M) Boston, Massachusetts DECEASED (75084)
+34 -- Luella739 Schulist381 (82 y/o F) Westport, Massachusetts  (134720)
+Waiting for threads to finish... java.util.concurrent.ThreadPoolExecutor@6a3fbcb1[Shutting down, pool size = 8, active threads = 8, queued tasks = 113, completed tasks = 29]
+36 -- Kristal814 Donya787 Heidenreich818 (75 y/o F) Seekonk, Massachusetts DECEASED (131227)
+37 -- Lakisha305 Kylee806 Deckow585 (75 y/o F) Brockton, Massachusetts  (105970)
+35 -- Nelson403 Lind531 (65 y/o M) Boston, Massachusetts DECEASED (100305)
+38 -- Cecil300 Jacobs452 (17 y/o M) North Andover, Massachusetts DECEASED (22949)
+13 -- Collene784 Erdman779 (83 y/o F) Shrewsbury, Massachusetts  (119018)
+21 -- Andrew29 Elana101 Kuhn96 (67 y/o F) Andover, Massachusetts DECEASED (96856)
+38 -- Deandre599 Langosh790 (74 y/o M) North Andover, Massachusetts DECEASED (119295)
+26 -- Leesa210 Brandon214 Cummerata161 (82 y/o F) Attleboro, Massachusetts  (116664)
+39 -- Joannie32 Waters156 (60 y/o F) Wakefield, Massachusetts  (83978)
+35 -- Stanford577 Pfannerstill264 (69 y/o M) Boston, Massachusetts  (94008)
+40 -- Loren192 Weimann465 (65 y/o M) Littleton Common, Massachusetts  (89658)
+21 -- Dagmar148 Hannelore734 Toy286 (74 y/o F) Andover, Massachusetts  (101324)
+41 -- Gabriel934 Linares712 (61 y/o M) Brookline, Massachusetts  (95449)
+42 -- Werner409 Friesen796 (84 y/o M) Boston, Massachusetts  (117380)
+43 -- Greg949 Boyle917 (76 y/o M) Malden, Massachusetts  (110941)
+36 -- Philomena945 Kallie862 Skiles927 (77 y/o F) Seekonk, Massachusetts DECEASED (107548)
+45 -- Ana María762 Elsa29 Solís294 (72 y/o F) Boston, Massachusetts  (102266)
+46 -- Janyce124 Wenona350 Langworth352 (54 y/o F) Leominster, Massachusetts  (77177)
+48 -- Lean294 Shan714 Lemke654 (46 y/o F) Auburn, Massachusetts  (67442)
+47 -- Ross213 McGlynn426 (71 y/o M) Southwick, Massachusetts  (98538)
+44 -- Ilene33 Keebler762 (77 y/o F) Boston, Massachusetts  (165961)
+36 -- Ignacia942 Adella39 Hudson301 (43 y/o F) Seekonk, Massachusetts DECEASED (59001)
+49 -- Regine404 Trinidad33 VonRueden376 (46 y/o F) Southborough, Massachusetts  (63130)
+50 -- Earnest658 Schimmel440 (54 y/o M) Cambridge, Massachusetts  (74924)
+51 -- Edmond919 Corwin846 (67 y/o M) Ipswich, Massachusetts  (93885)
+52 -- Russel238 Bernier607 (56 y/o M) Stow, Massachusetts  (76289)
+53 -- Taylor21 Kunde533 (55 y/o M) Carver, Massachusetts  (74863)
+54 -- Mirian768 Kutch271 (60 y/o F) Framingham, Massachusetts  (83063)
+55 -- Victor265 Gleason633 (50 y/o M) Barnstable, Massachusetts  (67742)
+36 -- Tesha491 Jerde200 (82 y/o F) Seekonk, Massachusetts  (115573)
+56 -- Dewitt635 Hirthe744 (46 y/o M) Canton, Massachusetts  (64570)
+38 -- Dillon740 Ziemann98 (75 y/o M) North Andover, Massachusetts  (116520)
+58 -- Lance203 Quitzon246 (51 y/o M) Holyoke, Massachusetts  (69015)
+57 -- Sam879 Mayer370 (75 y/o M) Brookline, Massachusetts  (129955)
+59 -- Sasha806 Bryanna1 Murazik203 (47 y/o F) Boston, Massachusetts  (67097)
+61 -- Hernán834 Ocasio180 (52 y/o M) Brockton, Massachusetts DECEASED (97340)
+60 -- Jessie665 Schmitt836 (76 y/o M) New Bedford, Massachusetts  (103866)
+63 -- Casandra937 Kiara978 Beahan375 (51 y/o F) Oxford, Massachusetts DECEASED (72435)
+62 -- Catalina187 Lucia634 Escamilla823 (60 y/o F) Boston, Massachusetts  (82948)
+65 -- Ela754 Julieann172 Huel628 (60 y/o F) Mendon, Massachusetts  (83671)
+64 -- Karry11 Keren761 Cummings51 (64 y/o F) Somerville, Massachusetts  (86646)
+66 -- Elvina437 Tamatha836 Jast432 (50 y/o F) Taunton, Massachusetts  (69865)
+63 -- Daine571 Lola232 Gislason620 (57 y/o F) Oxford, Massachusetts  (81204)
+69 -- Wilford267 Nicolas769 (49 y/o M) Easthampton, Massachusetts  (67183)
+68 -- Goldie436 Sharyn437 Brekke496 (58 y/o F) Randolph, Massachusetts  (81804)
+67 -- Ivey393 Simonis280 (78 y/o F) Medford, Massachusetts  (112442)
+71 -- Alison204 Adela471 Blanda868 (46 y/o F) Middleborough, Massachusetts  (63785)
+70 -- Sharan181 Margery365 Paucek755 (81 y/o F) Medway, Massachusetts  (112814)
+72 -- Vicente970 Longoria249 (68 y/o M) West Brookfield, Massachusetts  (95156)
+73 -- Ferdinand55 Zieme486 (56 y/o M) Falmouth, Massachusetts DECEASED (77558)
+75 -- Sophie40 Mohr916 (45 y/o F) Cambridge, Massachusetts  (64589)
+77 -- Johnathon489 Kemmer137 (52 y/o M) Taunton, Massachusetts  (71301)
+76 -- Vertie683 Effertz744 (53 y/o F) Boston, Massachusetts  (78096)
+74 -- Dominic463 Baumbach677 (84 y/o M) Northborough, Massachusetts DECEASED (118219)
+61 -- Julio César525 Carrero892 (66 y/o M) Brockton, Massachusetts DECEASED (89617)
+79 -- Jude172 Blanda868 (54 y/o M) Raynham, Massachusetts  (73056)
+80 -- Verena947 Tillman293 (26 y/o F) Abington, Massachusetts DECEASED (35545)
+78 -- Len277 Raynor401 (72 y/o M) Brookline, Massachusetts  (103154)
+73 -- Guy979 Fadel536 (58 y/o M) Falmouth, Massachusetts DECEASED (81280)
+81 -- Gloria696 Montoya249 (61 y/o F) Chelsea, Massachusetts  (108234)
+82 -- Adelia946 Heidenreich818 (59 y/o F) Worcester, Massachusetts  (86432)
+80 -- Denise470 Kimberlee228 Hegmann834 (74 y/o F) Abington, Massachusetts  (104229)
+61 -- Vicente970 Trejo396 (76 y/o M) Brockton, Massachusetts  (142586)
+83 -- Lavenia98 Hayes766 (57 y/o F) Everett, Massachusetts  (80679)
+73 -- Jeremy766 Weissnat378 (73 y/o M) Falmouth, Massachusetts  (100630)
+84 -- Louise871 Consuelo468 Jacobson885 (50 y/o F) Canton, Massachusetts  (75480)
+85 -- Lynn917 Hilpert278 (51 y/o M) Somerset, Massachusetts  (69848)
+74 -- Lucio648 Macejkovic424 (77 y/o M) Northborough, Massachusetts DECEASED (115369)
+88 -- Otto672 Oberbrunner298 (64 y/o M) Sterling, Massachusetts  (86466)
+90 -- Ouida808 Larisa542 Wolff180 (53 y/o F) Hudson, Massachusetts  (73732)
+86 -- Selina302 Janeen273 Bahringer146 (71 y/o F) Newton, Massachusetts  (99639)
+91 -- Luis923 Jenkins714 (45 y/o M) Foxborough, Massachusetts  (61393)
+87 -- Jordon466 Kuvalis369 (83 y/o M) Quincy, Massachusetts  (121457)
+89 -- Ruthe70 Chia293 Walter473 (68 y/o F) Springfield, Massachusetts  (123401)
+92 -- Joy676 Willodean275 Boehm581 (61 y/o F) Wayland, Massachusetts  (85680)
+94 -- Carisa395 Doyle959 (58 y/o F) Lynn, Massachusetts  (81179)
+95 -- Jeffrey461 Hermila490 Oberbrunner298 (65 y/o F) Taunton, Massachusetts  (91215)
+93 -- Brendon298 Ebert178 (83 y/o M) Ocean Grove, Massachusetts  (116236)
+96 -- Cassaundra447 Lacresha805 Hickle134 (69 y/o F) Randolph, Massachusetts  (100703)
+99 -- Ladonna785 Hoeger474 (1 y/o F) Hudson, Massachusetts DECEASED (2106)
+97 -- Ian270 Thompson596 (57 y/o M) Norwood, Massachusetts DECEASED (77971)
+98 -- Isaias604 Murazik203 (46 y/o M) Bourne, Massachusetts DECEASED (61343)
+98 -- Buford910 Berge125 (45 y/o M) Bourne, Massachusetts DECEASED (63761)
+101 -- Bryce11 Cormier289 (67 y/o M) Holbrook, Massachusetts  (98942)
+74 -- Greg949 Pagac496 (78 y/o M) Northborough, Massachusetts DECEASED (127756)
+99 -- Dia700 Heike726 Bahringer146 (54 y/o F) Hudson, Massachusetts  (78361)
+100 -- Latia151 Rosalyn434 Heller342 (71 y/o F) Boston, Massachusetts  (98362)
+102 -- Deeann517 Millicent213 Kertzmann286 (83 y/o F) Brookline, Massachusetts  (116395)
+97 -- Francisco472 Hodkiewicz467 (83 y/o M) Norwood, Massachusetts  (117707)
+98 -- Johnson679 Trantow673 (81 y/o M) Bourne, Massachusetts  (115413)
+103 -- Joey457 Mayert710 (59 y/o M) Holyoke, Massachusetts  (90984)
+107 -- Greg949 Dickinson688 (48 y/o M) Needham, Massachusetts  (65259)
+105 -- Joleen561 Kuhn96 (49 y/o F) Townsend, Massachusetts  (69127)
+Waiting for threads to finish... java.util.concurrent.ThreadPoolExecutor@6a3fbcb1[Shutting down, pool size = 8, active threads = 8, queued tasks = 43, completed tasks = 99]
+106 -- Janene3 Eichmann909 (53 y/o F) Boston, Massachusetts  (75608)
+104 -- Catrice481 Loma263 Nader710 (73 y/o F) West Springfield, Massachusetts  (103770)
+108 -- Deja232 Donnelly343 (78 y/o F) Freetown, Massachusetts  (109232)
+110 -- Shana231 Rosamond509 Bednar518 (63 y/o F) Milford, Massachusetts  (88035)
+109 -- Sun500 Stroman228 (74 y/o F) Agawam, Massachusetts  (105102)
+112 -- Consuela482 Stark857 (64 y/o F) Winchester, Massachusetts  (90654)
+111 -- Lenny728 Schmitt836 (84 y/o M) East Bridgewater, Massachusetts  (116479)
+113 -- Shelton25 Graham902 (60 y/o M) Fall River, Massachusetts  (87401)
+116 -- Sibyl335 Sharie942 Sauer652 (44 y/o F) Hamilton, Massachusetts DECEASED (60461)
+114 -- Rebecka733 Juliana372 Zboncak558 (58 y/o F) Lowell, Massachusetts DECEASED (86950)
+115 -- Denny560 Powlowski563 (61 y/o M) Peabody, Massachusetts DECEASED (105621)
+117 -- Etta748 Carter549 (66 y/o F) Watertown, Massachusetts  (96420)
+119 -- Bonita405 Davis923 (47 y/o F) Peabody, Massachusetts  (65971)
+116 -- Rosalyn434 Wanetta360 Schumm995 (46 y/o F) Hamilton, Massachusetts  (65315)
+118 -- Joesph309 Kshlerin58 (77 y/o M) Millbury, Massachusetts  (108115)
+120 -- Londa304 Megan108 Lowe577 (68 y/o F) Rockport, Massachusetts  (96595)
+74 -- Buford910 Cummings51 (84 y/o M) Northborough, Massachusetts  (117774)
+123 -- Jim478 Klein929 (56 y/o M) Yarmouth, Massachusetts  (77846)
+121 -- Aleshia311 Shanika235 Vandervort697 (67 y/o F) Westfield, Massachusetts  (94013)
+122 -- Bennie663 Ziemann98 (61 y/o M) Sagamore, Massachusetts  (84256)
+124 -- Ladawn167 Effie9 Pollich983 (48 y/o F) Woburn, Massachusetts  (66764)
+114 -- Makeda237 Monnie762 Zemlak964 (64 y/o F) Lowell, Massachusetts  (93552)
+125 -- Frank378 Nikolaus26 (53 y/o M) Fitchburg, Massachusetts DECEASED (71569)
+126 -- Piper612 Joanie498 Treutel973 (57 y/o F) Quincy, Massachusetts  (80335)
+129 -- Genevive999 Schmidt332 (68 y/o F) Salem, Massachusetts DECEASED (107097)
+130 -- Andra606 Candra395 Hoeger474 (67 y/o F) Medford, Massachusetts  (93382)
+128 -- Trista955 Hirthe744 (84 y/o F) Cheshire, Massachusetts  (117534)
+127 -- Moshe758 Nitzsche158 (76 y/o M) Weston, Massachusetts  (114637)
+125 -- Cyrus914 Bode78 (62 y/o M) Fitchburg, Massachusetts  (85364)
+131 -- Delta800 Jimmie93 Lynch190 (52 y/o F) Cambridge, Massachusetts  (71231)
+132 -- Brittny484 Ellis535 Kris249 (84 y/o F) Boston, Massachusetts  (117187)
+133 -- Weldon459 Zieme486 (49 y/o M) Sherborn, Massachusetts  (67780)
+134 -- Virgilio529 Willms744 (51 y/o M) Taunton, Massachusetts  (72257)
+135 -- Adolph80 Zieme486 (45 y/o M) Maynard, Massachusetts DECEASED (61878)
+129 -- Nola814 Gleason633 (34 y/o F) Salem, Massachusetts DECEASED (46741)
+136 -- Nancy265 Mui729 Blanda868 (74 y/o F) Billerica, Massachusetts  (132411)
+137 -- Mickey576 Funk324 (63 y/o M) Oxford, Massachusetts DECEASED (92525)
+138 -- Emmanuel930 Kozey370 (65 y/o M) Northborough, Massachusetts  (89452)
+139 -- Hipolito984 Howe413 (75 y/o M) Marion Center, Massachusetts  (102904)
+135 -- Von197 Zboncak558 (64 y/o M) Maynard, Massachusetts  (98268)
+140 -- Colette720 Slyvia34 Koch169 (84 y/o F) Boston, Massachusetts  (116922)
+115 -- Chadwick722 Kirlin939 (69 y/o M) Peabody, Massachusetts DECEASED (96980)
+129 -- Dedra50 January966 Cruickshank494 (68 y/o F) Salem, Massachusetts  (97232)
+142 -- David908 Leal292 (57 y/o M) Wilbraham, Massachusetts  (78382)
+141 -- Lawana430 Lara964 Wilkinson796 (73 y/o F) Randolph, Massachusetts  (101397)
+143 -- Johnnie679 MacGyver246 (58 y/o M) Bridgewater, Massachusetts  (78249)
+144 -- Drew592 O'Kon634 (65 y/o M) Montague, Massachusetts  (93929)
+145 -- Rayford811 Gulgowski816 (52 y/o M) Brockton, Massachusetts  (72130)
+147 -- Kena893 Genevie117 Bernhard322 (50 y/o F) Swampscott, Massachusetts  (70526)
+137 -- Sam879 Gerlach374 (60 y/o M) Oxford, Massachusetts DECEASED (85889)
+146 -- Margit604 McKenzie376 (78 y/o F) Belmont, Massachusetts  (109105)
+115 -- Zachery872 Auer97 (83 y/o M) Peabody, Massachusetts  (118227)
+148 -- Natacha644 Deedee112 Schuster709 (77 y/o F) Woburn, Massachusetts  (109705)
+150 -- Felix524 Rath779 (73 y/o M) Falmouth, Massachusetts  (102870)
+149 -- Dwain139 Oberbrunner298 (80 y/o M) Chicopee, Massachusetts  (110234)
+137 -- Filiberto722 Vandervort697 (75 y/o M) Oxford, Massachusetts  (132937)
+Records: total=193, alive=150, dead=43
+RNG=150
+Clinician RNG=5642
+
+[32mYou've just generated 193 patients![0m We're happy to know Synthea is helping you with your project.
+Like what we're doing? Synthea is an open-source project, and your support helps us keep building.
+Please consider [34m]8;;https://github.com/sponsors/synthetichealthmaking a donation]8;;[0m (https://github.com/sponsors/synthetichealth).
+

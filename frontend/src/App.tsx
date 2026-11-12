@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { api, setActiveTwin, TWIN_ID } from "./api/client";
 import type { TwinInfo } from "./api/types";
+import { ClinicalApp } from "./clinical/ClinicalApp";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { LiveControls } from "./components/LiveControls";
 import { PhoneWaiting } from "./components/PhoneWaiting";
@@ -26,7 +27,7 @@ const PAGES = [
 ] as const;
 
 const pageFromHash = () => {
-  const key = window.location.hash.replace(/^#\/?/, "");
+  const key = window.location.hash.replace(/^#\/?(legacy\/)?/, "");
   return PAGES.some((p) => p.key === key) ? key : "overview";
 };
 
@@ -40,6 +41,10 @@ const savedTwin = () => {
 };
 
 export default function App() {
+  return <ClinicalApp digitalTwin={<LegacyApp />} />;
+}
+
+function LegacyApp() {
   const [twinId, setTwinId] = useState(savedTwin);
   const [twins, setTwins] = useState<TwinInfo[]>([]);
   const [page, setPage] = useState(pageFromHash);
@@ -71,7 +76,7 @@ export default function App() {
   };
 
   const navigate = (key: string) => {
-    window.location.hash = `/${key}`;
+    window.location.hash = `/legacy/${key}`;
     window.scrollTo({ top: 0 });
   };
 
@@ -172,7 +177,7 @@ function TwinApp({
   const version = twin.state?.twin_time ?? "";
 
   return (
-    <div className="app">
+    <section className="legacy-twin">
       <header className="topbar">
         <div className="brand">
           <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden>
@@ -188,7 +193,7 @@ function TwinApp({
             <circle cx="17.5" cy="18" r="2" fill="#E0636B" />
           </svg>
           <div>
-            <h1>Human Health Digital Twin</h1>
+            <h2>Synthetic twin sandbox</h2>
             <label className="twin-switch">
               <span className="sr-only">Twin shown</span>
               <select
@@ -216,11 +221,11 @@ function TwinApp({
             </label>
           </div>
         </div>
-        <nav className="tabs" aria-label="Sections">
+        <nav className="tabs" aria-label="Twin sections">
           {PAGES.map((p) => (
             <a
               key={p.key}
-              href={`#/${p.key}`}
+              href={`#/legacy/${p.key}`}
               className={page === p.key ? "tab tab--on" : "tab"}
               aria-current={page === p.key ? "page" : undefined}
             >
@@ -278,7 +283,7 @@ function TwinApp({
                 ? `, last reading ${fmtDateTime(info.last_observation_at)}`
                 : ""}
               . The twin shows the state at the last reading; use{" "}
-              <a href="#/twin">Twin → Play back</a> to watch any day on the
+              <a href="#/legacy/twin">Twin → Play back</a> to watch any day on the
               body.
             </p>
           )}
@@ -290,7 +295,7 @@ function TwinApp({
         <LiveControls live={twin.live} onStatus={twin.setLive} />
       )}
 
-      <main className="main">
+      <div className="main">
         {twin.connection === "offline" && !twin.state && (
           <section className="panel error">
             The twin's backend isn't reachable. Start it with{" "}
@@ -327,12 +332,7 @@ function TwinApp({
           />
         )}
         {page === "system" && <SystemPage onStatus={twin.setLive} />}
-      </main>
-
-      <footer className="footer">
-        Research and demonstration prototype. Not a medical device; no diagnosis
-        or treatment advice. 3D anatomy: BodyParts3D © DBCLS, CC BY-SA 2.1 JP.
-      </footer>
-    </div>
+      </div>
+    </section>
   );
 }
