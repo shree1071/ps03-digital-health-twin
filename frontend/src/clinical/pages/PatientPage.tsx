@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
+import type { AuthSession } from "../auth";
 import { AlertCard } from "../AlertCard";
+import { ClinicalTwin3D } from "../ClinicalTwin3D";
 import { usePatient } from "../hooks";
+import { ReportModal } from "../ReportModal";
+import { buildDoctorPatientReport, type GeneratedReport } from "../reportGenerator";
 import {
   DriftPanel,
   News2Breakdown,
@@ -15,15 +19,18 @@ type AlertFilter = "clinical" | "device" | "all";
 
 export function PatientPage({
   patientId,
+  session,
   onBack,
   onOpenFhir,
 }: {
   patientId: string;
+  session?: Extract<AuthSession, { role: "doctor" }> | null;
   onBack: () => void;
   onOpenFhir: (id: string) => void;
 }) {
   const { state, alerts, readings, connection, error } = usePatient(patientId);
   const [alertFilter, setAlertFilter] = useState<AlertFilter>("clinical");
+  const [report, setReport] = useState<GeneratedReport | null>(null);
 
   useEffect(() => {
     setAlertFilter("clinical");
@@ -109,9 +116,17 @@ export function PatientPage({
         title="Latest vitals"
         hint={state.timestamp ? `${dateTime(state.timestamp)} UTC` : "no reading yet"}
         action={
-          <button className="btn btn--small" onClick={() => onOpenFhir(patientId)}>
-            View stored FHIR
-          </button>
+          <div className="row row--tight">
+            <button
+              className="btn btn--small btn--primary"
+              onClick={() => setReport(buildDoctorPatientReport(state, alerts, readings, session))}
+            >
+              Generate Clinical Report
+            </button>
+            <button className="btn btn--small" onClick={() => onOpenFhir(patientId)}>
+              View stored FHIR
+            </button>
+          </div>
         }
       >
         <VitalsStrip observation={state.observation} untrusted={untrusted} />
@@ -120,6 +135,13 @@ export function PatientPage({
           HAPI for this patient. A missing mandated vital is recorded as{" "}
           <span className="code">dataAbsentReason</span>, never as a zero.
         </p>
+      </Panel>
+
+      <Panel
+        title="3D Digital Twin"
+        hint="Live anatomical model driven by this patient's latest vitals & alert tier"
+      >
+        <ClinicalTwin3D state={state} height="420px" />
       </Panel>
 
       <div className="grid grid--sidebar">
@@ -227,6 +249,8 @@ export function PatientPage({
           </Panel>
         </div>
       </div>
+
+      {report && <ReportModal report={report} onClose={() => setReport(null)} />}
     </div>
   );
 }

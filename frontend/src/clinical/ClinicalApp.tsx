@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { clinicalApi } from "./api";
+import { clearSession, loadSession, saveSession, type AuthSession } from "./auth";
 import "./clinical.css";
 import { useWard } from "./hooks";
 import { FhirPage } from "./pages/FhirPage";
+import { PatientDashboard } from "./pages/PatientDashboard";
 import { PatientPage } from "./pages/PatientPage";
 import { ReportPage } from "./pages/ReportPage";
+import { SignInPage } from "./pages/SignInPage";
 import { WardPage } from "./pages/WardPage";
 import { Disclaimer } from "./ui";
 
@@ -32,9 +36,39 @@ const NAV = [
 ] as const;
 
 export function ClinicalApp({ digitalTwin }: { digitalTwin: ReactNode }) {
+  const [session, setSession] = useState<AuthSession | null>(loadSession);
   const [route, setRoute] = useState<Route>(parseHash);
   const ward = useWard();
   const [selected, setSelected] = useState<string | null>(null);
+
+  useEffect(() => {
+    void clinicalApi
+      .setActiveSession({
+        role: session?.role ?? null,
+        display_name:
+          session?.role === "doctor"
+            ? session.clinicianName
+            : session?.role === "patient"
+              ? session.patientName
+              : null,
+        patient_id: session?.role === "patient" ? session.patientId : null,
+      })
+      .catch(() => {});
+  }, [session]);
+
+  const handleSignIn = useCallback((next: AuthSession) => {
+    saveSession(next);
+    setSession(next);
+    window.location.hash = next.role === "doctor" ? "#/ward" : "#/my-dashboard";
+    window.scrollTo({ top: 0 });
+  }, []);
+
+  const handleSignOut = useCallback(() => {
+    clearSession();
+    setSession(null);
+    window.location.hash = "#/signin";
+    window.scrollTo({ top: 0 });
+  }, []);
 
   useEffect(() => {
     const onHash = () => setRoute(parseHash());
@@ -78,43 +112,67 @@ export function ClinicalApp({ digitalTwin }: { digitalTwin: ReactNode }) {
               </svg>
             </span>
             <div>
-              <div className="clinical__title">Post-Discharge Deterioration Monitor</div>
+              <div className="clinical__title">VitalTwin · Post-Discharge Monitor</div>
               <div className="clinical__subtitle">
                 MineArena 1.0 · PS-03 · Torque Titans, BIET Davangere
               </div>
             </div>
           </div>
 
-          <nav className="clinical__nav" aria-label="Sections">
-            {NAV.map((item) => (
-              <a
-                key={item.key}
-                href={item.href}
-                aria-current={activeNav === item.key ? "page" : undefined}
-              >
-                {item.label}
-                {item.key === "ward" && urgent > 0 && (
-                  <span className="tier tier--URGENT" style={{ marginLeft: 7 }}>
-                    {urgent}
-                  </span>
-                )}
-              </a>
-            ))}
-          </nav>
+          {session?.role === "doctor" && (
+            <nav className="clinical__nav" aria-label="Sections">
+              {NAV.map((item) => (
+                <a
+                  key={item.key}
+                  href={item.href}
+                  aria-current={activeNav === item.key ? "page" : undefined}
+                >
+                  {item.label}
+                  {item.key === "ward" && urgent > 0 && (
+                    <span className="tier tier--URGENT" style={{ marginLeft: 7 }}>
+                      {urgent}
+                    </span>
+                  )}
+                </a>
+              ))}
+            </nav>
+          )}
 
-          <span
-            className={`pill pill--${ward.connection === "live" ? "live" : ward.connection === "offline" ? "off" : ""}`}
-            role="status"
-          >
-            <span className="pill__dot" aria-hidden />
-            {ward.connection === "live"
-              ? ward.replay?.running
-                ? "Streaming"
-                : "Connected"
-              : ward.connection === "offline"
-                ? "Reconnecting"
-                : "Connecting"}
-          </span>
+          {session?.role === "patient" && (
+            <nav className="clinical__nav" aria-label="Patient sections">
+              <a href="#/my-dashboard" aria-current="page">
+                My Dashboard
+              </a>
+            </nav>
+          )}
+
+          <div className="row row--tight" style={{ alignItems: "center", marginLeft: session ? undefined : "auto" }}>
+            <span
+              className={`pill pill--${ward.connection === "live" ? "live" : ward.connection === "offline" ? "off" : ""}`}
+              role="status"
+            >
+              <span className="pill__dot" aria-hidden />
+              {ward.connection === "live"
+                ? ward.replay?.running
+                  ? "Streaming"
+                  : "Connected"
+                : ward.connection === "offline"
+                  ? "Reconnecting"
+                  : "Connecting"}
+            </span>
+            {session && (
+              <>
+                <span className="chip">
+                  {session.role === "doctor"
+                    ? `${session.clinicianName} · Doctor`
+                    : `${session.patientName} · Patient`}
+                </span>
+                <button className="btn btn--small" onClick={handleSignOut}>
+                  Sign out
+                </button>
+              </>
+            )}
+          </div>
         </div>
         <Disclaimer />
       </header>
@@ -129,38 +187,48 @@ export function ClinicalApp({ digitalTwin }: { digitalTwin: ReactNode }) {
           </section>
         )}
 
-        {route.page === "ward" && (
-          <WardPage
-            rows={ward.rows}
-            replay={ward.replay}
-            selected={selected}
-            onSelect={openPatient}
-            onRefresh={ward.refresh}
-          />
-        )}
-        {route.page === "patient" && (
-          <PatientPage
-            patientId={route.id}
-            onBack={() => go("#/ward")}
-            onOpenFhir={(id) => go(`#/fhir/${id}`)}
-          />
-        )}
-        {route.page === "twin" && (
-          <div className="col">
-            <div className="notice">
-              Synthetic physiology sandbox. This separate demo does not calculate the
-              ward patients’ clinical scores; use Ward for PS-03 monitoring.
-            </div>
-            {digitalTwin}
-          </div>
-        )}
-        {route.page === "report" && <ReportPage />}
-        {route.page === "fhir" && (
-          <FhirPage
-            rows={ward.rows}
-            patientId={route.id ?? selected}
-            onSelect={(id) => go(`#/fhir/${id}`)}
-          />
+        {!session ? (
+          <SignInPage rows={ward.rows} onSignIn={handleSignIn} />
+        ) : session.role === "patient" ? (
+          <PatientDashboard patientId={session.patientId} />
+        ) : (
+          <>
+            {route.page === "ward" && (
+              <WardPage
+                rows={ward.rows}
+                replay={ward.replay}
+                selected={selected}
+                session={session}
+                onSelect={openPatient}
+                onRefresh={ward.refresh}
+              />
+            )}
+            {route.page === "patient" && (
+              <PatientPage
+                patientId={route.id}
+                session={session}
+                onBack={() => go("#/ward")}
+                onOpenFhir={(id) => go(`#/fhir/${id}`)}
+              />
+            )}
+            {route.page === "twin" && (
+              <div className="col">
+                <div className="notice">
+                  Synthetic physiology sandbox. This separate demo does not calculate the
+                  ward patients’ clinical scores; use Ward for PS-03 monitoring.
+                </div>
+                {digitalTwin}
+              </div>
+            )}
+            {route.page === "report" && <ReportPage />}
+            {route.page === "fhir" && (
+              <FhirPage
+                rows={ward.rows}
+                patientId={route.id ?? selected}
+                onSelect={(id) => go(`#/fhir/${id}`)}
+              />
+            )}
+          </>
         )}
       </main>
 

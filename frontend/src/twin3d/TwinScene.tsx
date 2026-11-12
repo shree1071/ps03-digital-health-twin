@@ -44,7 +44,7 @@ export function TwinScene({
         <Canvas
           camera={{ position: [0, 1.0, 4.3], fov: 30 }}
           dpr={[1, 2]}
-          gl={{ antialias: true, alpha: true }}
+          gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}
           aria-label="3D anatomical digital twin of the subject"
           role="img"
           onPointerMissed={() => onSelect?.(null)}

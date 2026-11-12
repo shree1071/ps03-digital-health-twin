@@ -32,6 +32,27 @@ const post = <T>(path: string, body?: unknown) =>
     body: body === undefined ? undefined : JSON.stringify(body),
   });
 
+export interface XgbComparison {
+  available: boolean;
+  without_xgboost: {
+    engine: string;
+    tier: string;
+    risk_score: number;
+    news2_total: number | null;
+    suppressed?: boolean;
+  };
+  with_xgboost: {
+    engine: string;
+    tier: string;
+    risk_score: number;
+    confidence: number;
+    probabilities: Record<string, number>;
+  } | null;
+  agreement: string;
+  score_delta: number | null;
+  should_use_both: string;
+}
+
 export const clinicalApi = {
   patients: () =>
     request<{ patients: PatientRow[]; disclaimer: string }>("/api/clinical/patients"),
@@ -40,6 +61,75 @@ export const clinicalApi = {
     request<{ alerts: MonitorResult[] }>(`/api/clinical/patients/${id}/alerts?limit=${limit}`),
   readings: (id: string, limit = 400) =>
     request<{ readings: Observation[] }>(`/api/clinical/patients/${id}/readings?limit=${limit}`),
+  sendReading: (
+    id: string,
+    reading: {
+      timestamp: string;
+      heart_rate: number | null;
+      spo2: number | null;
+      respiratory_rate: number | null;
+      temperature: number | null;
+      activity_intensity?: number;
+      source?: string;
+      send_whatsapp?: boolean;
+      whatsapp_to?: string | null;
+    },
+  ) =>
+    post<
+      (MonitorResult & {
+        whatsapp?: {
+          queued?: boolean;
+          job_id?: string;
+          sent: boolean;
+          dry_run?: boolean;
+          recipients?: string[];
+          sids?: string[];
+          error?: string;
+        };
+        xgboost?: XgbComparison;
+      }) | { scored: boolean }
+    >(`/api/clinical/patients/${id}/readings`, reading),
+  patientXgb: (id: string) =>
+    request<XgbComparison>(`/api/clinical/patients/${id}/xgboost`),
+  sendWhatsappReport: (body: {
+    title: string;
+    summary_text: string;
+    whatsapp_to?: string | null;
+  }) =>
+    post<{ queued: boolean; job_id: string; sent: boolean }>(
+      "/api/clinical/whatsapp/report",
+      body,
+    ),
+  whatsappStatus: (jobId: string) =>
+    request<{
+      queued?: boolean;
+      sent: boolean;
+      dry_run?: boolean;
+      recipients?: string[];
+      sids?: string[];
+      error?: string;
+    }>(`/api/clinical/whatsapp/${jobId}`),
+  setActiveSession: (body: {
+    role: string | null;
+    display_name: string | null;
+    patient_id: string | null;
+  }) => post<{ ok: boolean }>("/api/clinical/session/active", body),
+  askWhatsapp: (body: {
+    question: string;
+    send_to_whatsapp?: boolean;
+    whatsapp_to?: string | null;
+    role?: string | null;
+    display_name?: string | null;
+    patient_id?: string | null;
+  }) =>
+    post<{
+      answer: string;
+      addressed_to: string;
+      role: string;
+      patient_name: string | null;
+      patient_id: string | null;
+      whatsapp?: { queued?: boolean; job_id?: string; sent: boolean };
+    }>("/api/clinical/whatsapp/ask", body),
   replayStatus: () => request<ReplayStatus>("/api/clinical/replay/status"),
   replayStart: (patientIds?: string[]) =>
     post<ReplayStatus>("/api/clinical/replay/start", { patient_ids: patientIds ?? null }),

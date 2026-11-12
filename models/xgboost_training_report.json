@@ -1,0 +1,452 @@
+{
+  "total_rows": 40569,
+  "tier_names": [
+    "NORMAL",
+    "WATCH",
+    "REVIEW",
+    "URGENT"
+  ],
+  "dataset_counts": {
+    "twin_db": 8434,
+    "demo": 75,
+    "bidmc": 2405,
+    "fitbit": 18493,
+    "wearable_csv": 40,
+    "synthea": 6802,
+    "simulator": 4320
+  },
+  "best_iteration": 74,
+  "val_metrics": {
+    "rows": 5927,
+    "class_counts": {
+      "NORMAL": 5091,
+      "WATCH": 759,
+      "REVIEW": 6,
+      "URGENT": 71
+    },
+    "macro_f1": 0.8907,
+    "weighted_f1": 0.9935,
+    "false_alarm_rate": 0.0037,
+    "risk_roc_auc": 0.998,
+    "risk_precision": 0.9774,
+    "risk_recall": 0.9833,
+    "confusion_matrix": [
+      [
+        5072,
+        19,
+        0,
+        0
+      ],
+      [
+        14,
+        745,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        5,
+        0
+      ],
+      [
+        0,
+        0,
+        5,
+        66
+      ]
+    ]
+  },
+  "test_metrics": {
+    "rows": 5928,
+    "class_counts": {
+      "NORMAL": 5206,
+      "WATCH": 645,
+      "REVIEW": 0,
+      "URGENT": 77
+    },
+    "macro_f1": 0.9859,
+    "weighted_f1": 0.9931,
+    "false_alarm_rate": 0.0027,
+    "risk_roc_auc": 0.9989,
+    "risk_precision": 0.9803,
+    "risk_recall": 0.964,
+    "confusion_matrix": [
+      [
+        5192,
+        14,
+        0,
+        0
+      ],
+      [
+        26,
+        619,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        76
+      ]
+    ]
+  },
+  "per_source_test": {
+    "twin_db": {
+      "rows": 1266,
+      "class_counts": {
+        "NORMAL": 1266,
+        "WATCH": 0,
+        "REVIEW": 0,
+        "URGENT": 0
+      },
+      "macro_f1": 1.0,
+      "weighted_f1": 1.0,
+      "false_alarm_rate": 0.0,
+      "risk_roc_auc": null,
+      "risk_precision": 0.0,
+      "risk_recall": 0.0,
+      "confusion_matrix": [
+        [
+          1266,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "demo": {
+      "rows": 12,
+      "class_counts": {
+        "NORMAL": 0,
+        "WATCH": 12,
+        "REVIEW": 0,
+        "URGENT": 0
+      },
+      "macro_f1": 0.4783,
+      "weighted_f1": 0.9565,
+      "false_alarm_rate": 0.0,
+      "risk_roc_auc": null,
+      "risk_precision": 1.0,
+      "risk_recall": 0.9167,
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          11,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "bidmc": {
+      "rows": 365,
+      "class_counts": {
+        "NORMAL": 40,
+        "WATCH": 325,
+        "REVIEW": 0,
+        "URGENT": 0
+      },
+      "macro_f1": 0.8704,
+      "weighted_f1": 0.9444,
+      "false_alarm_rate": 0.05,
+      "risk_roc_auc": 0.9957,
+      "risk_precision": 0.9935,
+      "risk_recall": 0.9385,
+      "confusion_matrix": [
+        [
+          38,
+          2,
+          0,
+          0
+        ],
+        [
+          20,
+          305,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "fitbit": {
+      "rows": 2774,
+      "class_counts": {
+        "NORMAL": 2770,
+        "WATCH": 4,
+        "REVIEW": 0,
+        "URGENT": 0
+      },
+      "macro_f1": 0.8634,
+      "weighted_f1": 0.9991,
+      "false_alarm_rate": 0.0011,
+      "risk_roc_auc": 1.0,
+      "risk_precision": 0.5714,
+      "risk_recall": 1.0,
+      "confusion_matrix": [
+        [
+          2767,
+          3,
+          0,
+          0
+        ],
+        [
+          0,
+          4,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "wearable_csv": {
+      "rows": 6,
+      "class_counts": {
+        "NORMAL": 6,
+        "WATCH": 0,
+        "REVIEW": 0,
+        "URGENT": 0
+      },
+      "macro_f1": 1.0,
+      "weighted_f1": 1.0,
+      "false_alarm_rate": 0.0,
+      "risk_roc_auc": null,
+      "risk_precision": 0.0,
+      "risk_recall": 0.0,
+      "confusion_matrix": [
+        [
+          6,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    },
+    "synthea": {
+      "rows": 857,
+      "class_counts": {
+        "NORMAL": 551,
+        "WATCH": 301,
+        "REVIEW": 0,
+        "URGENT": 5
+      },
+      "macro_f1": 0.959,
+      "weighted_f1": 0.9941,
+      "false_alarm_rate": 0.0036,
+      "risk_roc_auc": 0.9992,
+      "risk_precision": 0.9935,
+      "risk_recall": 0.9935,
+      "confusion_matrix": [
+        [
+          549,
+          2,
+          0,
+          0
+        ],
+        [
+          2,
+          299,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          4
+        ]
+      ]
+    },
+    "simulator": {
+      "rows": 648,
+      "class_counts": {
+        "NORMAL": 573,
+        "WATCH": 3,
+        "REVIEW": 0,
+        "URGENT": 72
+      },
+      "macro_f1": 0.6637,
+      "weighted_f1": 0.9876,
+      "false_alarm_rate": 0.0122,
+      "risk_roc_auc": 0.985,
+      "risk_precision": 0.9114,
+      "risk_recall": 0.96,
+      "confusion_matrix": [
+        [
+          566,
+          7,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          72
+        ]
+      ]
+    }
+  },
+  "top_features": [
+    {
+      "feature": "hr_per_activity",
+      "importance": 0.188253
+    },
+    {
+      "feature": "hr_roll_mean_10",
+      "importance": 0.117192
+    },
+    {
+      "feature": "temperature",
+      "importance": 0.080418
+    },
+    {
+      "feature": "systolic_bp",
+      "importance": 0.073269
+    },
+    {
+      "feature": "hr_pct_max",
+      "importance": 0.072811
+    },
+    {
+      "feature": "activity_intensity",
+      "importance": 0.069686
+    },
+    {
+      "feature": "temp_abs_dev",
+      "importance": 0.061729
+    },
+    {
+      "feature": "spo2",
+      "importance": 0.054417
+    },
+    {
+      "feature": "shock_index",
+      "importance": 0.047118
+    },
+    {
+      "feature": "respiratory_rate",
+      "importance": 0.045585
+    },
+    {
+      "feature": "is_asleep",
+      "importance": 0.043439
+    },
+    {
+      "feature": "steps",
+      "importance": 0.042051
+    },
+    {
+      "feature": "heart_rate",
+      "importance": 0.037065
+    },
+    {
+      "feature": "hr_roll_std_10",
+      "importance": 0.024359
+    },
+    {
+      "feature": "spo2_roll_mean_10",
+      "importance": 0.009612
+    }
+  ]
+}

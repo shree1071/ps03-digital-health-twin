@@ -1,6 +1,12 @@
+import { clinicalToTwinPayload, type WatchLiveOverride } from "./ClinicalTwin3D";
 import type { AuthSession } from "./auth";
 import type { MonitorResult, Observation, PatientRow, PatientStatePayload } from "./types";
-import { SCENARIO_LABEL, TIER_LABEL, dateTime, fmtValue } from "./ui";
+import { SCENARIO_LABEL, TIER_LABEL, dateTime } from "./ui";
+
+function fmtMetric(value: number | null | undefined, digits = 0): string {
+  if (value === null || value === undefined) return "—";
+  return digits > 0 ? value.toFixed(digits) : String(Math.round(value));
+}
 
 export interface ReportTable {
   headers: string[];
@@ -14,6 +20,23 @@ export interface ReportSection {
   table?: ReportTable;
 }
 
+export interface ReportVisualContext {
+  state: PatientStatePayload;
+  alerts: MonitorResult[];
+  readings: Observation[];
+  liveOverride?: WatchLiveOverride | null;
+  session?: Extract<AuthSession, { role: "doctor" }> | null;
+}
+
+export interface OrganFinding {
+  organ: string;
+  metricLabel: string;
+  valueText: string;
+  baselineText: string;
+  status: "normal" | "watch" | "anomalous";
+  summary: string;
+}
+
 export interface GeneratedReport {
   id: string;
   kind: "doctor-patient" | "doctor-ward" | "patient-summary";
@@ -24,6 +47,7 @@ export interface GeneratedReport {
   filename: string;
   disclaimer: string;
   sections: ReportSection[];
+  visualContext?: ReportVisualContext;
 }
 
 const DEFAULT_DISCLAIMER =
@@ -101,10 +125,10 @@ export function buildDoctorPatientReport(
   } else if (state.observation) {
     const o = state.observation;
     vitalsRows.push(
-      ["Heart rate", `${fmtValue("heart_rate", o.heart_rate)} bpm`, "—", "unscored"],
-      ["SpO₂", `${fmtValue("spo2", o.spo2)} %`, "—", "unscored"],
-      ["Respiratory rate", `${fmtValue("respiratory_rate", o.respiratory_rate)} br/min`, "—", "unscored"],
-      ["Temperature", `${fmtValue("temperature", o.temperature)} °C`, "—", "unscored"],
+      ["Heart rate", `${fmtMetric(o.heart_rate)} bpm`, "—", "unscored"],
+      ["SpO₂", `${fmtMetric(o.spo2)} %`, "—", "unscored"],
+      ["Respiratory rate", `${fmtMetric(o.respiratory_rate)} br/min`, "—", "unscored"],
+      ["Temperature", `${fmtMetric(o.temperature, 1)} °C`, "—", "unscored"],
     );
   }
 
@@ -196,6 +220,7 @@ export function buildDoctorPatientReport(
     filename: `clinical-report-${p.patient_id}.md`,
     disclaimer: state.disclaimer || DEFAULT_DISCLAIMER,
     sections,
+    visualContext: { state, alerts, readings, session },
   };
 }
 
@@ -267,20 +292,23 @@ export function buildPatientHealthReport(
   state: PatientStatePayload,
   alerts: MonitorResult[],
   readings: Observation[],
+  liveOverride?: WatchLiveOverride | null,
 ): GeneratedReport {
   const p = state.profile;
   const generatedAt = nowIso();
-  const obs = state.observation;
+  const obs = liveOverride ?? state.observation;
 
-  const statusText = !state.timestamp
-    ? "Your wearable monitor has not sent a reading yet."
-    : state.suppressed
-      ? "Your wearable sensor had a signal issue on the last reading. Please check that your sensor is snug and charged."
-      : state.tier === "NORMAL"
-        ? "Your recent vital signs look steady and within your expected post-discharge range."
-        : state.tier === "WATCH"
-          ? "A mild change was noted in your readings. Continue monitoring and follow your discharge care plan."
-          : "Your readings show a noticeable change from your usual range. Please contact your care team for a check-in.";
+  const statusText = liveOverride
+    ? "Showing live readings from your connected smartwatch alongside your clinical history."
+    : !state.timestamp
+      ? "Your wearable monitor has not sent a reading yet."
+      : state.suppressed
+        ? "Your wearable sensor had a signal issue on the last reading. Please check that your sensor is snug and charged."
+        : state.tier === "NORMAL"
+          ? "Your recent vital signs look steady and within your expected post-discharge range."
+          : state.tier === "WATCH"
+            ? "A mild change was noted in your readings. Continue monitoring and follow your discharge care plan."
+            : "Your readings show a noticeable change from your usual range. Please contact your care team for a check-in.";
 
   const targetSpo2 =
     p.spo2_scale === 2
@@ -307,7 +335,7 @@ export function buildPatientHealthReport(
         title: "Current Recovery Status",
         paragraphs: [statusText],
         bullets: [
-          `Last reading: ${state.timestamp ? `${dateTime(state.timestamp)} UTC` : "Waiting for first reading"}`,
+          `Last reading: ${liveOverride ? "Live from connected smartwatch" : state.timestamp ? `${dateTime(state.timestamp)} UTC` : "Waiting for first reading"}`,
           `Readings recorded in current window: ${readings.length}`,
           `Personal oxygen (SpO₂) target: ${targetSpo2}`,
         ],
@@ -320,12 +348,12 @@ export function buildPatientHealthReport(
             ? [
                 [
                   "Heart rate",
-                  `${fmtValue("heart_rate", obs.heart_rate)} bpm`,
+                  `${fmtMetric(obs.heart_rate)} bpm`,
                   p.beta_blocked ? "Adjusted for your beta-blocker medication" : "Resting pulse",
                 ],
-                ["Oxygen saturation (SpO₂)", `${fmtValue("spo2", obs.spo2)} %`, `Target: ${targetSpo2}`],
-                ["Breathing rate", `${fmtValue("respiratory_rate", obs.respiratory_rate)} breaths/min`, ""],
-                ["Body temperature", `${fmtValue("temperature", obs.temperature)} °C`, ""],
+                ["Oxygen saturation (SpO₂)", `${fmtMetric(obs.spo2)} %`, `Target: ${targetSpo2}`],
+                ["Breathing rate", `${fmtMetric(obs.respiratory_rate)} breaths/min`, ""],
+                ["Body temperature", `${fmtMetric(obs.temperature, 1)} °C`, ""],
               ]
             : [["—", "No readings yet", "Wearable sync pending"]],
         },
@@ -353,5 +381,259 @@ export function buildPatientHealthReport(
         ],
       },
     ],
+    visualContext: { state, alerts, readings, liveOverride },
   };
+}
+
+export function deriveOrganFindings(
+  state: PatientStatePayload,
+  liveOverride?: WatchLiveOverride | null,
+  patientFriendly = false,
+): OrganFinding[] {
+  const twin = clinicalToTwinPayload(state, liveOverride);
+  const a = twin.assessments;
+  const specs: Array<{
+    key: "heart_rate" | "spo2" | "respiratory_rate" | "temperature";
+    organ: string;
+    metricLabel: string;
+    unit: string;
+    digits: number;
+    highMsg: string;
+    lowMsg: string;
+    okMsg: string;
+  }> = [
+    {
+      key: "heart_rate",
+      organ: "Heart & Circulation",
+      metricLabel: "Heart Rate",
+      unit: "bpm",
+      digits: 0,
+      highMsg: patientFriendly
+        ? "Heart rate is higher than your usual resting range."
+        : "Tachycardic / elevated pulse relative to personal baseline & beta-blocker rule.",
+      lowMsg: patientFriendly
+        ? "Heart rate is lower than your usual resting range."
+        : "Bradycardic / depressed pulse relative to personal baseline.",
+      okMsg: patientFriendly ? "Steady heart rhythm and rate." : "Within expected personal range.",
+    },
+    {
+      key: "spo2",
+      organ: "Lungs & Oxygenation",
+      metricLabel: "Blood Oxygen (SpO₂)",
+      unit: "%",
+      digits: 1,
+      highMsg: patientFriendly ? "Oxygen level is above target." : "Above personalized SpO₂ target.",
+      lowMsg: patientFriendly
+        ? "Oxygen saturation is below your personal target."
+        : `Hypoxemic trend below Scale ${state.profile.spo2_scale} target (${state.profile.spo2_target[0]}–${state.profile.spo2_target[1]}%).`,
+      okMsg: patientFriendly ? "Oxygen delivery is on target." : "Within personalized SpO₂ target.",
+    },
+    {
+      key: "respiratory_rate",
+      organ: "Respiratory Drive",
+      metricLabel: "Breathing Rate",
+      unit: "br/min",
+      digits: 1,
+      highMsg: patientFriendly
+        ? "Breathing is faster than usual — take a rest and check in if short of breath."
+        : "Tachypnea / elevated respiratory rate.",
+      lowMsg: patientFriendly
+        ? "Breathing rate is slower than usual."
+        : "Bradypnea / depressed respiratory rate.",
+      okMsg: patientFriendly ? "Breathing pace is steady." : "Normal respiratory cadence.",
+    },
+    {
+      key: "temperature",
+      organ: "Systemic / Thermal",
+      metricLabel: "Body Temperature",
+      unit: "°C",
+      digits: 2,
+      highMsg: patientFriendly
+        ? "Elevated temperature (possible fever)."
+        : "Pyrexia / febrile elevation above baseline.",
+      lowMsg: patientFriendly
+        ? "Body temperature is lower than normal."
+        : "Hypothermic drift below baseline.",
+      okMsg: patientFriendly ? "Normal body temperature." : "Normothermic.",
+    },
+  ];
+
+  return specs.map((s) => {
+    const item = a[s.key];
+    const val = item?.value;
+    const expected = item?.expected ?? val ?? 0;
+    const status = item?.status ?? "normal";
+    const summary =
+      status === "normal"
+        ? s.okMsg
+        : (val ?? expected) >= expected
+          ? s.highMsg
+          : s.lowMsg;
+    const base = state.baselines?.[s.key];
+    const baselineText = base
+      ? `Baseline ${base.center.toFixed(s.digits)} (±${(2 * base.spread).toFixed(s.digits)} ${s.unit})`
+      : "Baseline warming up";
+    return {
+      organ: s.organ,
+      metricLabel: s.metricLabel,
+      valueText: val !== undefined && val !== null ? `${fmtMetric(val, s.digits)} ${s.unit}` : "—",
+      baselineText,
+      status,
+      summary,
+    };
+  });
+}
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function buildSvgSparkline(
+  readings: Observation[],
+  metric: "heart_rate" | "spo2" | "respiratory_rate" | "temperature",
+  label: string,
+  unit: string,
+  color: string,
+): string {
+  const vals = readings
+    .map((r) => r[metric])
+    .filter((v): v is number => typeof v === "number" && Number.isFinite(v));
+  if (vals.length < 2) {
+    return `<div class="chart-card"><div class="chart-title">${escapeHtml(label)} (${escapeHtml(unit)})</div><div class="muted">Not enough readings for trend graph</div></div>`;
+  }
+  const min = Math.min(...vals);
+  const max = Math.max(...vals);
+  const span = max - min || 1;
+  const w = 280;
+  const h = 74;
+  const pts = vals
+    .map((v, i) => {
+      const x = (i / (vals.length - 1)) * (w - 16) + 8;
+      const y = h - 10 - ((v - min) / span) * (h - 20);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    })
+    .join(" ");
+  const latest = vals[vals.length - 1];
+  return `<div class="chart-card">
+    <div class="chart-head"><span>${escapeHtml(label)}</span><strong>${latest.toFixed(metric === "temperature" ? 1 : 0)} ${escapeHtml(unit)}</strong></div>
+    <svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="${escapeHtml(label)} trend">
+      <polyline fill="none" stroke="${color}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" points="${pts}" />
+    </svg>
+    <div class="chart-range">Min ${min.toFixed(1)} · Max ${max.toFixed(1)} ${escapeHtml(unit)}</div>
+  </div>`;
+}
+
+export function reportToHtml(report: GeneratedReport, twinSnapshotDataUrl?: string | null): string {
+  const vc = report.visualContext;
+  const findings = vc
+    ? deriveOrganFindings(vc.state, vc.liveOverride, report.kind === "patient-summary")
+    : [];
+
+  const findingsHtml = findings.length
+    ? `<section><h2>3D Organ &amp; System Findings</h2>
+        ${
+          twinSnapshotDataUrl
+            ? `<div class="twin-snap"><img src="${twinSnapshotDataUrl}" alt="3D Digital Twin showing highlighted organs" /></div>`
+            : ""
+        }
+        <div class="findings-grid">
+          ${findings
+            .map(
+              (f) => `<div class="finding finding--${f.status}">
+                <div class="finding-top"><strong>${escapeHtml(f.organ)}</strong><span class="badge badge--${f.status}">${f.status.toUpperCase()}</span></div>
+                <div class="finding-val">${escapeHtml(f.metricLabel)}: <strong>${escapeHtml(f.valueText)}</strong> <span class="muted">(${escapeHtml(f.baselineText)})</span></div>
+                <p>${escapeHtml(f.summary)}</p>
+              </div>`,
+            )
+            .join("")}
+        </div></section>`
+    : "";
+
+  const chartsHtml =
+    vc && vc.readings.length > 1
+      ? `<section><h2>Vital Sign Trends</h2><div class="charts-grid">
+          ${buildSvgSparkline(vc.readings, "heart_rate", "Heart Rate", "bpm", "#d9483b")}
+          ${buildSvgSparkline(vc.readings, "spo2", "SpO₂", "%", "#1d70b8")}
+          ${buildSvgSparkline(vc.readings, "respiratory_rate", "Respiratory Rate", "br/min", "#0f766e")}
+          ${buildSvgSparkline(vc.readings, "temperature", "Temperature", "°C", "#c27803")}
+        </div></section>`
+      : "";
+
+  const sectionsHtml = report.sections
+    .map((sec) => {
+      const ps = (sec.paragraphs ?? []).map((p) => `<p>${escapeHtml(p)}</p>`).join("");
+      const bs =
+        sec.bullets && sec.bullets.length
+          ? `<ul>${sec.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>`
+          : "";
+      const tbl =
+        sec.table && sec.table.rows.length
+          ? `<table><thead><tr>${sec.table.headers.map((h) => `<th>${escapeHtml(h)}</th>`).join("")}</tr></thead><tbody>${sec.table.rows
+              .map((r) => `<tr>${r.map((c) => `<td>${escapeHtml(c)}</td>`).join("")}</tr>`)
+              .join("")}</tbody></table>`
+          : "";
+      return `<section><h2>${escapeHtml(sec.title)}</h2>${ps}${bs}${tbl}</section>`;
+    })
+    .join("");
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>${escapeHtml(report.title)}</title>
+<style>
+  body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: #162229; background: #f4f7f8; margin: 0; padding: 24px; line-height: 1.5; }
+  .sheet { max-width: 900px; margin: 0 auto; background: #fff; border: 1px solid #d5dee3; border-radius: 12px; padding: 28px; }
+  header { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-bottom: 1px solid #d5dee3; padding-bottom: 14px; margin-bottom: 16px; }
+  h1 { margin: 4px 0; font-size: 22px; }
+  h2 { font-size: 16px; margin: 22px 0 8px; color: #0b2d3c; border-bottom: 1px solid #eef2f4; padding-bottom: 4px; }
+  .eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #566973; }
+  .meta { font-size: 12.5px; color: #465862; text-align: right; }
+  .notice { background: #fff8e6; border: 1px solid #f0d78c; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; }
+  .twin-snap { text-align: center; background: #0f1a20; border-radius: 10px; padding: 10px; margin-bottom: 12px; }
+  .twin-snap img { max-height: 300px; max-width: 100%; border-radius: 6px; }
+  .findings-grid, .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+  .finding, .chart-card { border: 1px solid #d5dee3; border-radius: 8px; padding: 10px 12px; background: #fbfcfd; }
+  .finding--watch { border-color: #e6a817; background: #fffbf0; }
+  .finding--anomalous { border-color: #d9483b; background: #fff5f5; }
+  .finding-top, .chart-head { display: flex; justify-content: space-between; align-items: center; font-size: 13px; margin-bottom: 4px; }
+  .finding-val { font-size: 13px; margin-bottom: 4px; }
+  .finding p { margin: 0; font-size: 12.5px; color: #465862; }
+  .badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 999px; }
+  .badge--normal { background: #e3f5ec; color: #166534; }
+  .badge--watch { background: #fef3c7; color: #92400e; }
+  .badge--anomalous { background: #fee2e2; color: #991b1b; }
+  .chart-range, .muted { font-size: 11px; color: #566973; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid #e6edf0; }
+  th { background: #f6f9fa; font-weight: 600; }
+  ul { margin: 6px 0; padding-left: 20px; }
+  li { margin: 3px 0; font-size: 13.5px; }
+</style>
+</head>
+<body>
+  <article class="sheet">
+    <header>
+      <div>
+        <div class="eyebrow">PS-03 Post-Discharge Monitor · ${report.kind === "patient-summary" ? "Patient Copy" : "Clinical Copy"}</div>
+        <h1>${escapeHtml(report.title)}</h1>
+        <div class="muted">${escapeHtml(report.subtitle)}</div>
+      </div>
+      <div class="meta">
+        <div><strong>Generated:</strong> ${escapeHtml(dateTime(report.generatedAt))} UTC</div>
+        <div><strong>Prepared:</strong> ${escapeHtml(report.authorLabel)}</div>
+      </div>
+    </header>
+    <div class="notice">${escapeHtml(report.disclaimer)}</div>
+    ${findingsHtml}
+    ${chartsHtml}
+    ${sectionsHtml}
+  </article>
+</body>
+</html>`;
 }

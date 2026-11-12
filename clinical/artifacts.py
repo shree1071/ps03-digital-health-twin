@@ -230,16 +230,27 @@ class ArtifactDetector:
             )
 
     # -------------------------------------------------------------- helpers
-    def _recent_values(self, metric: str, obs: Observation) -> list[float]:
+    def _recent_values(
+        self,
+        metric: str,
+        obs: Observation,
+        *,
+        window_s: float | None = None,
+        max_gap_s: float | None = None,
+    ) -> list[float]:
         """Values for ``metric`` inside the flatline window, including ``obs``."""
-        cutoff = self.config.flatline_window_s
+        cutoff = self.config.flatline_window_s if window_s is None else window_s
         values: list[float] = []
         current = getattr(obs, metric)
         if current is not None:
             values.append(float(current))
+        prev_ts = obs.timestamp
         for item in reversed(self._history):
             if (obs.timestamp - item.timestamp).total_seconds() > cutoff:
                 break
+            if max_gap_s is not None and (prev_ts - item.timestamp).total_seconds() > max_gap_s:
+                break
+            prev_ts = item.timestamp
             value = getattr(item, metric)
             if value is not None:
                 values.append(float(value))
